@@ -1,0 +1,42 @@
+{
+  "name": "@setsunajs/setsuna",
+  "version": "0.1.4",
+  "description": "A responsive, compact, progressive 'JavaScript' library for better development services",
+  "keywords": [
+    "setsuna",
+    "@setsunajs/setsuna"
+  ],
+  "homepage": "https://github.com/setsunajs/setsuna#readme",
+  "bugs": {
+    "url": "https://github.com/setsunajs/setsuna/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/setsunajs/setsuna.git"
+  },
+  "license": "MIT",
+  "author": "@顾弦笙/usagisah <1286791152@qq.com>",
+  "exports": {
+    ".": {
+      "require": "./index.js",
+      "import": "./dist/setsuna.js"
+    },
+    "./server-renderer": {
+      "require": "./server-renderer.js",
+      "import": "./dist/server-renderer.js"
+    },
+    "./dist/*": "./dist/*"
+  },
+  "main": "index.js",
+  "jsdelivr": "dist/setsuna.global.js",
+  "unpkg": "dist/setsuna.global.js",
+  "module": "dist/setsuna.js",
+  "files": [
+    "index.js",
+    "dist"
+  ],
+  "dependencies": {
+    "@setsunajs/observable": "^0.1.5",
+    "@setsunajs/shared": "^0.1.2"
+  }
+}

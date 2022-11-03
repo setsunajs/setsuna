@@ -1,0 +1,27 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node ./scripts/dev.js",
+    "build": "node ./scripts/build.js",
+    "release": "node ./scripts/release.js",
+    "format": "prettier -w ."
+  },
+  "packageManager": "pnpm@7.11.0",
+  "devDependencies": {
+    "@microsoft/api-extractor": "^7.33.5",
+    "@types/inquirer": "^9.0.2",
+    "@types/minimist": "^1.2.2",
+    "@types/node": "^18.11.9",
+    "chalk": "^5.1.2",
+    "esbuild": "^0.15.13",
+    "execa": "^6.1.0",
+    "inquirer": "^9.1.4",
+    "minimist": "^1.2.7",
+    "prettier": "^2.7.1",
+    "prettier-config-usagisah": "^1.0.1",
+    "semver": "^7.3.8",
+    "terser": "^5.15.1",
+    "typescript": "^4.8.4"
+  }
+}
