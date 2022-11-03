@@ -36,6 +36,7 @@
     "dist"
   ],
   "dependencies": {
+    "csstype": "^3.1.1",
     "@setsunajs/observable": "^0.1.5",
     "@setsunajs/shared": "^0.1.2"
   }
