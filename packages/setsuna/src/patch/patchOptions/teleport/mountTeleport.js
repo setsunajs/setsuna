@@ -1,6 +1,6 @@
 import { Fragment } from "../../../components/Fragment"
 import { _jsx } from "../../../jsx"
-import { querySelector } from "../../../node/nodeOpts"
+import { querySelector } from "../../../dom"
 import { render } from "../../../render"
 import { isString } from "@setsunajs/share"
 import { error } from "../../../handler/errorHandler"

@@ -1,4 +1,4 @@
-import { createTextElement, insertElement } from "../../../node/nodeOpts"
+import { createTextElement, insertElement } from "../../../dom"
 
 export function mountTextElement(context) {
   const { newVNode: node, container, anchor } = context

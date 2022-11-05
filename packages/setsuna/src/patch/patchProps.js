@@ -1,4 +1,4 @@
-import { removeAttr, removeEvent, setAttr, setEvent } from "../node/nodeOpts"
+import { removeAttr, removeEvent, setAttr, setEvent } from "../dom"
 import { resolveEventName } from "@setsunajs/share"
 import { resolveObservableState } from "@setsunajs/share"
 import { isBoolean, isFunction } from "@setsunajs/share"

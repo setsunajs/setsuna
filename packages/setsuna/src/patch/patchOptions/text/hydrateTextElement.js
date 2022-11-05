@@ -1,5 +1,5 @@
 import { error } from "../../../handler/errorHandler"
-import { getElementNextSibling, setTextContent } from "../../../node/nodeOpts"
+import { getElementNextSibling, setTextContent } from "../../../dom"
 import { mountTextElement } from "./mountTextElement"
 
 export function hydrateTextElement(context) {

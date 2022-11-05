@@ -1,4 +1,4 @@
-import { insertElement } from "../../../node/nodeOpts"
+import { insertElement } from "../../../dom"
 import { mountChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
 import { normalizeElementNode } from "./normalizeElementNode"

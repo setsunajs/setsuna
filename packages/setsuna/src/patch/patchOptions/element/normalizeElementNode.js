@@ -1,4 +1,4 @@
-import { createElement } from "../../../node/nodeOpts"
+import { createElement } from "../../../dom"
 import { normalizeElementProps } from "@setsunajs/share"
 import { omit } from "@setsunajs/share"
 import { isFunction } from "@setsunajs/share"

@@ -1,6 +1,6 @@
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { normalizeChildren } from "../../../jsx"
-import { getElementNextSibling, removeElement } from "../../../node/nodeOpts"
+import { getElementNextSibling, removeElement } from "../../../dom"
 import { resolveNextNodes } from "@setsunajs/share"
 import { isFunction, isPromise } from "@setsunajs/share"
 import { patchFragment } from "../fragment/patchFragment"

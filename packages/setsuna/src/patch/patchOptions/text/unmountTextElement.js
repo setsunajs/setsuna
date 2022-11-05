@@ -1,4 +1,4 @@
-import { removeElement } from "../../../node/nodeOpts"
+import { removeElement } from "../../../dom"
 
 export function unmountTextElement(node) {
   const { el } = node

@@ -1,6 +1,6 @@
 import { nodeToString } from "../server/pipes/pipeNodeToString"
 import { _jsx } from "../jsx"
-import { removeElement } from "../node/nodeOpts"
+import { removeElement } from "../dom"
 import { ignoreElement } from "../patch/patchOptions/element/ignoreElement"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"

@@ -1,5 +1,5 @@
 import { error } from "../../../handler/errorHandler"
-import { getElementNextSibling, removeElement } from "../../../node/nodeOpts"
+import { getElementNextSibling, removeElement } from "../../../dom"
 import { hydrateChildren, mountChildren } from "../../patchChildren"
 import { hydrateProps, patchProps } from "../../patchProps"
 import { ignoreElement } from "./ignoreElement"

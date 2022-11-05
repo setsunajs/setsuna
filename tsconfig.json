@@ -24,6 +24,6 @@
     "types": ["packages/setsuna/jsx.d.ts"]
   },
   "include": [
-    "packages/*/src"
+    "packages/*/src/**/*.ts"
   ]
 }

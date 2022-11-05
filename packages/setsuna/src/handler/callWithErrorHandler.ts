@@ -1,11 +1,16 @@
+import { VNode } from "./../jsx"
 import { error } from "./errorHandler"
 
-export function callWithErrorHandler(VNode, fn, arg) {
+export function callWithErrorHandler(
+  VNode: null | VNode,
+  fn: (...args: any[]) => any,
+  arg: any
+) {
   try {
     return fn(arg)
   } catch (e) {
     if (!VNode) {
-      error(e)
+      return error(e as string)
     }
 
     let c = VNode._c
@@ -17,7 +22,9 @@ export function callWithErrorHandler(VNode, fn, arg) {
     }
     error(
       "flushing",
-      e instanceof Error ? `${e.name}: ${e.stack}` : e,
+      e instanceof Error
+        ? `${e.name}${e.stack ? `: ${e.stack}` : ""}`
+        : (e as string),
       errorTask
     )
   }

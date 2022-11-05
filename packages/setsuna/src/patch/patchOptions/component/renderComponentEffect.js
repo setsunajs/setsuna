@@ -3,7 +3,7 @@ import { appendJob, postQueue } from "../../../scheduler"
 import { isFunction } from "@setsunajs/share"
 import { patch } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
-import { getNextSibling } from "../../../node/nodeOpts"
+import { getNextSibling } from "../../../dom"
 
 export function createRenderComponentEffect(options) {
   function renderComponentEffect() {

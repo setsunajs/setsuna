@@ -1,4 +1,4 @@
-import { setTextContent } from "../../../node/nodeOpts"
+import { setTextContent } from "../../../dom"
 
 export function updateTextElement({ oldVNode, newVNode: node }) {
   const { children: oldContent, el } = oldVNode._e

@@ -1,4 +1,4 @@
-import { getNextSibling, insertElement } from "../node/nodeOpts"
+import { getNextSibling, insertElement } from "../dom"
 import { isSomeVNode, isUndefined } from "@setsunajs/share"
 import { patch } from "./patch"
 import { unmount } from "./unmount"

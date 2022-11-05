@@ -1,4 +1,4 @@
-import { removeElement } from "../../../node/nodeOpts"
+import { removeElement } from "../../../dom"
 import { patchProps } from "../../patchProps"
 import { unmount } from "../../unmount"
 
