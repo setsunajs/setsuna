@@ -1,5 +1,5 @@
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
-import { registryRecord } from "../../../hmr/hmr"
+import { registryRecord } from "../../../hmr"
 import { appendJob } from "../../../scheduler"
 import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
@@ -66,7 +66,7 @@ export function mountComponent(context: PatchContext) {
   }))
 
   if (__DEV__) {
-    registryRecord(node._hmrId, update)
+    registryRecord(node._hmrId!, update)
   }
 
   setCurrentInstance(c)

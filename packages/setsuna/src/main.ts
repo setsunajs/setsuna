@@ -1,6 +1,6 @@
-export * from "./hmr/hmr"
+export * from "./hmr"
 
-export { _jsx, isVNode } from "./jsx"
+export { jsx, isVNode } from "./jsx"
 export * from "./render"
 export * from "./components/Await"
 export * from "./components/Fragment"

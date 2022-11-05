@@ -1,12 +1,20 @@
-import { isFunction } from "@setsunajs/share"
+import { isFunction } from "@setsunajs/shared"
 import { callWithErrorHandler } from "./handler/callWithErrorHandler"
 import { error } from "./handler/errorHandler"
+import { VNode } from "./jsx"
+import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
 
 let pending = true
-let pendingQueue = []
-let flushingQueue = []
-let workingJob = null
-export const postQueue = []
+let pendingQueue: RenderComponentEffect[] = []
+let flushingQueue: RenderComponentEffect[] = []
+let workingJob: RenderComponentEffect | null | undefined = null
+export const postQueue: Array<
+  | {
+      VNode: VNode
+      fns: (() => any)[]
+    }
+  | (() => any)
+> = []
 
 export function flushJobs() {
   flushingQueue = pendingQueue
@@ -42,7 +50,7 @@ export const schedulerJobs = (() => {
   }
 })()
 
-export function appendJob(job, deep = false) {
+export function appendJob(job: RenderComponentEffect, deep = false) {
   if (flushingQueue.includes(job) || pendingQueue.includes(job)) {
     if (deep) job.deep = true
     return
@@ -70,7 +78,7 @@ function flushPostQueue() {
   postQueue.length = 0
 }
 
-export function nextTick(fn) {
+export function nextTick(fn: () => any) {
   if (!isFunction(fn)) {
     return error("nextTick", "fn is not a function", fn)
   }
