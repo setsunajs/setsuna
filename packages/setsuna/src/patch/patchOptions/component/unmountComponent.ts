@@ -1,9 +1,11 @@
+import { VNode } from './../../../jsx';
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { unmount } from "../../unmount"
+import { ComponentNode } from './mountComponent';
 
-export function unmountComponent(node) {
+export function unmountComponent(node: VNode) {
   const { update, _c: c } = node
-  const { observable, context, unmounts, subTree, parentComponent } = c
+  const { observable, context, unmounts, subTree, parentComponent } = (c as ComponentNode)
 
   update.active = false
   if (parentComponent) {

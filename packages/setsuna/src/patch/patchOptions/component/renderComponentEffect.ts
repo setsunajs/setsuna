@@ -1,14 +1,30 @@
+import { VNode } from "./../../../jsx"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { appendJob, postQueue } from "../../../scheduler"
-import { isFunction } from "@setsunajs/share"
-import { patch } from "../../patch"
+import { isFunction } from "@setsunajs/shared"
+import { patch, PatchContext } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
-import { getNextSibling } from "../../../dom"
+import { dom } from "../../../dom"
+import { ComponentNode } from "./mountComponent"
 
-export function createRenderComponentEffect(options) {
+type RenderCompEffectOptions = {
+  c: ComponentNode
+  anchor: VNode["anchor"]
+  deep: boolean
+  active: boolean
+  hydrate: PatchContext["hydrate"]
+  hydrateNode: PatchContext["hydrateNode"]
+}
+
+export type RenderComponentEffect = { (): any } & RenderCompEffectOptions
+
+export function createRenderComponentEffect(
+  options: RenderCompEffectOptions | null
+) {
   function renderComponentEffect() {
-    const { c, anchor, deep } = renderComponentEffect
-    let { hydrateNode, hydrate } = renderComponentEffect
+    const { c, anchor, deep } = renderComponentEffect as RenderComponentEffect
+    let { hydrateNode, hydrate } =
+      renderComponentEffect as RenderComponentEffect
     const {
       render,
       mounted,
@@ -21,18 +37,18 @@ export function createRenderComponentEffect(options) {
     } = c
 
     setCurrentInstance(c)
-    const nextSubTree = callWithErrorHandler(VNode, render)
+    const nextSubTree = callWithErrorHandler(VNode, render!)
     setCurrentInstance(null)
 
     if (mounted) {
-      const updated = { VNode, fns: [] }
+      const updated: ((...args: any[]) => any)[] = []
       updates.forEach(updateFn => {
         const fn = callWithErrorHandler(VNode, updateFn)
         if (isFunction(fn)) {
-          updated.fns.push(fn)
+          updated.push(fn)
         }
       })
-      updated.fns.length > 0 && postQueue.push(updated)
+      updated.length > 0 && postQueue.push({ VNode, updated })
 
       patch({
         oldVNode: preSubTree,
@@ -43,7 +59,7 @@ export function createRenderComponentEffect(options) {
         deep
       })
 
-      const invalid = []
+      const invalid: RenderComponentEffect[] = []
       deps.forEach(u => (u.active ? appendJob(u) : invalid.push(u)))
       invalid.forEach(u => deps.delete(u))
 
@@ -65,7 +81,7 @@ export function createRenderComponentEffect(options) {
       }
 
       VNode.el = nextSubTree?.el
-      VNode.anchor = nextSubTree ? getNextSibling(nextSubTree) : null
+      VNode.anchor = nextSubTree ? dom.getNextSibling(nextSubTree) : null
       Object.assign(c, {
         mounted: true,
         unmounts: mounts.map(fn => callWithErrorHandler(VNode, fn))
@@ -81,5 +97,5 @@ export function createRenderComponentEffect(options) {
 
   Object.assign(renderComponentEffect, options)
   options = null
-  return renderComponentEffect
+  return renderComponentEffect as any as RenderComponentEffect
 }

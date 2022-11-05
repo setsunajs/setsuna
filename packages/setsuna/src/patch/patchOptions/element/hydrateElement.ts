@@ -1,51 +1,54 @@
 import { error } from "../../../handler/errorHandler"
-import { getElementNextSibling, removeElement } from "../../../dom"
+import { dom } from "../../../dom"
 import { hydrateChildren, mountChildren } from "../../patchChildren"
 import { hydrateProps, patchProps } from "../../patchProps"
 import { ignoreElement } from "./ignoreElement"
 import { mountElement } from "./mountElement"
 import { normalizeElementNode } from "./normalizeElementNode"
 import { setElementRef } from "./setElementRef"
+import { PatchContext } from "../../patch"
 
-export function hydrateElement(context) {
-  const { newVNode: node, container, hydrateNode } = context
+export function hydrateElement(context: PatchContext) {
+  const { container, hydrateNode } = context
+  const node = context.newVNode!
+  const n = normalizeElementNode(node, false)
+
   const { type, children } = node
-  const e = normalizeElementNode(node, false)
+
   const isCustomWrapper = ignoreElement.has(type)
   const isCustomElement = isCustomWrapper || type.includes("-")
-  const el = (e.el = hydrateNode ?? container.firstChild)
 
+  const el = (n.el = hydrateNode || container.firstChild)
   if (!el) {
     error(
       "hydrate element",
-      `节点不匹配，期望得到(<${e.tag}/>)，却匹配到(${el})`
+      `node mismatch, expected '<${n.tag}/>', but matched('null')`
     )
+
     mountElement({ ...context, hydrate: false, anchor: null })
     return null
   }
 
-  if (el.tagName.toLowerCase() !== e.tag) {
+  if (el.nodeName.toLowerCase() !== n.tag) {
     error(
       "hydrate element",
-      `节点对不上，期望得到(<${
-        e.tag
-      }/>)，却匹配到(<${el.tagName.toLowerCase()}/>)`
+      `node mismatch, expected '<${n.tag}/>', but matched('${el.nodeName}')`
     )
 
-    const anchor = getElementNextSibling(el)
-    removeElement(el)
+    const anchor = dom.getNextSibling(el)
+    dom.removeElem(el)
     mountElement({ ...context, hydrate: false, anchor })
     return anchor
   }
 
   !isCustomWrapper && !isCustomElement
-    ? hydrateProps(el, e.attrs)
-    : patchProps(e.el, e.attrs, {})
+    ? hydrateProps(el, n.attrs)
+    : patchProps(n.el, n.attrs, {})
 
   hydrateChildren(children, { ...context, hydrateNode: null, container: el })
 
-  setElementRef(e)
+  setElementRef(n)
   node.el = el
 
-  return isCustomWrapper ? el.hydrate(context) : getElementNextSibling(el)
+  return isCustomWrapper ? (el as any).hydrate(context) : dom.getNextSibling(el)
 }

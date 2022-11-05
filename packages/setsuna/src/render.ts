@@ -20,12 +20,12 @@ export function createApp(container: HTMLElement) {
   def(container, "__se_container", true)
 
   return {
-    mount: (node: VNode | SeElement) => mount(node, container),
-    hydrate: (node: VNode | SeElement) => mount(node, container)
+    mount: (node: VNode | SeElement) => render(node, container),
+    hydrate: (node: VNode | SeElement) => hydrate(node, container)
   }
 }
 
-export function mount(VNode: VNode | SeElement, container: HTMLElement) {
+export function render(VNode: VNode | SeElement, container: Node) {
   patch({
     oldVNode: null,
     newVNode: VNode as VNode,
@@ -37,7 +37,7 @@ export function mount(VNode: VNode | SeElement, container: HTMLElement) {
   })
 }
 
-export function hydrate(VNode: VNode | SeElement, container: HTMLElement) {
+export function hydrate(VNode: VNode | SeElement, container: Node) {
   patch({
     oldVNode: null,
     newVNode: VNode as VNode,

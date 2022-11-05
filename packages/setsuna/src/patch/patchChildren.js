@@ -29,8 +29,8 @@ export function hydrateChildren(children, options) {
 }
 
 export function patchChildren(
-  oldChildren,
   newChildren,
+  oldChildren,
   { container, anchor, ...rest }
 ) {
   let s1 = 0

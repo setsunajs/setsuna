@@ -1,24 +1,41 @@
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { registryRecord } from "../../../hmr/hmr"
 import { appendJob } from "../../../scheduler"
-import { isFunction } from "@setsunajs/share"
+import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
-import { createRenderComponentEffect } from "./renderComponentEffect"
+import { createRenderComponentEffect, RenderComponentEffect } from "./renderComponentEffect"
 import { error } from "../../../handler/errorHandler"
+import { PatchContext } from "../../patch"
+import { VNode, VNodeChildren } from "../../../jsx"
+import { Observable } from "@setsunajs/observable"
+
+type ComponentContextValue = { state: unknown; input$: Observable }
+export type ComponentNode = {
+  cid: number
+  FC: (props: Record<any, any>) => () => VNode
+  props: Record<any, any>
+  container: Node
+  parentComponent: ComponentNode
+  slot: VNodeChildren
+  subTree: VNode | null
+  render: (() => VNode) | null
+  observable: Array<Observable>
+  deps: Set<RenderComponentEffect>
+  mounts: Array<(...args: any[]) => any>
+  unmounts: Array<(...args: any[]) => any>
+  updates: Array<(...args: any[]) => any>
+  context: Record<string | symbol | number, ComponentContextValue>
+  mounted: boolean
+  VNode: VNode
+}
 
 let cid = 0
-export function mountComponent(context) {
-  const {
-    newVNode: node,
-    container,
-    anchor,
-    parentComponent,
-    deep,
-    hydrate,
-    hydrateNode
-  } = context
+export function mountComponent(context: PatchContext) {
+  const node = context.newVNode!
+  const { container, anchor, parentComponent, deep, hydrate, hydrateNode } =
+    context
   const { type, props, children } = node
-  const c = (node._c = {
+  const c: ComponentNode = (node._c = {
     cid: cid++,
     FC: type,
     props,
@@ -28,7 +45,7 @@ export function mountComponent(context) {
     subTree: null,
     render: null,
     observable: [],
-    deps: new Set(),
+    deps: new Set([]),
     mounts: [],
     unmounts: [],
     updates: [],
@@ -71,10 +88,13 @@ export function mountComponent(context) {
   return update()
 }
 
-function bindReactiveUpdate(input$, { update }) {
+function bindReactiveUpdate(input$: Observable, { update }: VNode) {
   input$.subscribe(() => appendJob(update))
 }
 
-function bindContextUpdate({ input$ }, { update }) {
+function bindContextUpdate(
+  { input$ }: ComponentContextValue,
+  { update }: VNode
+) {
   input$.subscribe(() => appendJob(update, true))
 }

@@ -1,8 +1,9 @@
+import { PatchContext } from "../../patch"
 import { patchFragment } from "../fragment/patchFragment"
 
-export function patchSlot(context) {
+export function patchSlot(context: PatchContext) {
   const { parentComponent, VNode, slot } = context.parentComponent
-  context.newVNode.children = slot
+  context.newVNode!.children = slot
   if (parentComponent) {
     parentComponent.deps.add(VNode.update)
   }

@@ -15,7 +15,7 @@ export function hydrateFragment(context: PatchContext) {
   if (!hydrateNode || hydrateNode.textContent !== "Fragment") {
     error(
       "hydrate fragment",
-      `node mismatch, (<Fragment/>), expected '<Fragment/>', but matched(${
+      `node mismatch, expected '<Fragment/>', but matched(${
         hydrateNode ? hydrateNode.nodeName : "null"
       })`
     )

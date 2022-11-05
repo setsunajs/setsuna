@@ -5,6 +5,7 @@ import {
   isPromise,
   excludes
 } from "@setsunajs/shared"
+import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
 
 export type Component<P = {}> = {
   (props: P): SeElement<P>
@@ -13,15 +14,15 @@ export type Component<P = {}> = {
 }
 export type DOMString = string
 export type EmptyNode = null
-export type VNodeType<P = any> = Component<P> | DOMString | EmptyNode
+export type VNodeType<P = any> = Component<P> | DOMString | EmptyNode | any
 export type VNodeKey = number | string | symbol
 export type VNodeChildren = Array<
   VNode | Promise<any> | ((...args: any[]) => any) | Function
 >
-export type VNode<P = {}> = {
+export type VNode = {
   type: VNodeType<any>
   key: string | number | symbol
-  props: Omit<P, "key">
+  props: Record<any, any>
   text: string
   children: VNodeChildren
   el?: Node | null
@@ -31,9 +32,8 @@ export type VNode<P = {}> = {
   _hmrId?: string
   _file?: string
   __se_VNode: true
+  update?: RenderComponentEffect
 }
-
-
 
 export type SeElement<P = {}> = {
   type: VNodeType<P>
@@ -48,13 +48,13 @@ export function isVNode(value: unknown): value is VNode {
 }
 
 export * from "./components/Fragment"
-export function jsx<P extends object = {}>(
+export function jsx<P extends Record<any, any>>(
   type: VNodeType<any>,
   props: P,
   ...children: unknown[]
 ) {
   const _props: Record<any, any> = isPlainObject(props) ? props : {}
-  const VNode: VNode<P> = {
+  const VNode: VNode = {
     type,
     key: _props.key,
     props: excludes(_props, key => key === "key") as any,

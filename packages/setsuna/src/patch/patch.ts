@@ -18,8 +18,8 @@ export type PatchContext = {
   oldVNode: null | VNode
   newVNode: null | VNode
   container: Node
-  anchor: null | undefined | Node
-  parentComponent: null | any
+  anchor?: null | Node
+  parentComponent?: null | any
   deep: boolean
   hydrate?: boolean
   hydrateNode?: Node | null

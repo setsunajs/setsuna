@@ -20,10 +20,11 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "skipLibCheck": true,
-    "paths": {},
-    "types": ["packages/setsuna/jsx.d.ts"]
+    "paths": {}
   },
   "include": [
-    "packages/*/src/**/*.ts"
+    "packages/*/src",
+    "packages/setsuna/jsx.d.ts",
+    "global.d.ts"
   ]
 }

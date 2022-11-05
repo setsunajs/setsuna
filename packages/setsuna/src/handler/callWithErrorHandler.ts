@@ -4,7 +4,7 @@ import { error } from "./errorHandler"
 export function callWithErrorHandler(
   VNode: null | VNode,
   fn: (...args: any[]) => any,
-  arg: any
+  arg?: any
 ) {
   try {
     return fn(arg)
