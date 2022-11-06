@@ -1,10 +1,7 @@
 {
   "compilerOptions": {
     "target": "ES2018",
-    "lib": [
-      "ESNext",
-      "DOM"
-    ],
+    "lib": ["ESNext", "DOM"],
     "jsx": "preserve",
     "jsxFactory": "_jsx",
     "jsxFragmentFactory": "Fragment",
@@ -22,9 +19,5 @@
     "skipLibCheck": true,
     "paths": {}
   },
-  "include": [
-    "packages/*/src",
-    "packages/setsuna/jsx.d.ts",
-    "global.d.ts"
-  ]
+  "include": ["packages/*/src", "packages/setsuna/jsx.d.ts", "global.d.ts"]
 }

@@ -1,4 +1,4 @@
-import { VNode } from './../jsx';
+import { VNode } from "./../jsx"
 import { Await } from "../components/Await"
 import { Teleport } from "../components/Teleport"
 import { Fragment } from "../components/Fragment"
@@ -10,7 +10,7 @@ import { unmountELement } from "./patchOptions/element/unmountElement"
 import { unmountFragment } from "./patchOptions/fragment/unmountFragment"
 import { unmountTeleport } from "./patchOptions/teleport/unmountTeleport"
 import { unmountTextElement } from "./patchOptions/text/unmountTextElement"
-import { error } from '../handler/errorHandler';
+import { error } from "../handler/errorHandler"
 
 export function unmount(node: VNode) {
   const { type } = node

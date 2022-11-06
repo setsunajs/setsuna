@@ -4,7 +4,6 @@ import { isFunction } from "@setsunajs/shared"
 import { isWebComponent } from "./components/WebComponent"
 import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
 
-
 if (!globalThis?.window?.__SETSUNA_HMR_MAP__) {
   globalThis.window.__SETSUNA_HMR_MAP__ = {
     invokeReload
@@ -31,7 +30,7 @@ export function invokeReload(App: any) {
   }
 
   const appRecord = records.get(App.hmrId)
-  if(!appRecord) {
+  if (!appRecord) {
     return
   }
 

@@ -98,7 +98,10 @@ export function hydrateProps(el: Element, attrs: Record<any, any>) {
     }
 
     if (!isBoolean(attr) && attr + "" != realAttr) {
-      error("hydrating attrs", `attr mismatch, expect '${attr}' but matched '${realAttr}'`)
+      error(
+        "hydrating attrs",
+        `attr mismatch, expect '${attr}' but matched '${realAttr}'`
+      )
       dom.setAttr(el, key, attr)
     }
 
@@ -115,7 +118,10 @@ export function hydrateProps(el: Element, attrs: Record<any, any>) {
       const eventName = resolveJsxEventName(key)
       dom.setEvent(el, eventName || key, attr)
     } else {
-      error("hydrating attrs", `attr mismatch, expect '${attr}' but matched 'null'`)
+      error(
+        "hydrating attrs",
+        `attr mismatch, expect '${attr}' but matched 'null'`
+      )
       dom.setAttr(el, key, attr)
     }
   })

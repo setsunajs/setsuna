@@ -21,11 +21,11 @@ export type VNodeChildren = Array<
 >
 export type VNode = {
   type: VNodeType<any>
-  key: string | number | symbol
+  key: VNodeKey
   props: Record<any, any>
   text: string
   children: VNodeChildren
-  el?: Node | null
+  el?: Element | null
   anchor?: Node | null
   _c: any
   _n: any

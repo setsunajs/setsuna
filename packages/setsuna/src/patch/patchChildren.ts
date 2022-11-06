@@ -1,9 +1,10 @@
-import { getNextSibling, insertElement } from "../dom"
-import { isSomeVNode, isUndefined } from "@setsunajs/share"
-import { patch } from "./patch"
+import { VNode, VNodeChildren, VNodeKey } from "../jsx"
+import { dom } from "../dom"
+import { isSomeVNode, isUndef } from "@setsunajs/shared"
+import { patch, PatchContext } from "./patch"
 import { unmount } from "./unmount"
 
-export function mountChildren(children, options) {
+export function mountChildren(children: VNode[], options: PatchContext) {
   const size = children.length
   if (size === 0) {
     return
@@ -14,7 +15,7 @@ export function mountChildren(children, options) {
   }
 }
 
-export function hydrateChildren(children, options) {
+export function hydrateChildren(children: VNode[], options: PatchContext) {
   const size = children.length
   if (size === 0) {
     return null
@@ -22,16 +23,20 @@ export function hydrateChildren(children, options) {
 
   let hydrateNode = options.hydrateNode ?? options.container.firstChild
   for (let i = 0; i < children.length; i++) {
-    hydrateNode = patch({ ...options, hydrateNode, newVNode: children[i] })
+    hydrateNode = patch({
+      ...options,
+      hydrateNode,
+      newVNode: children[i]
+    })
   }
 
   return hydrateNode
 }
 
 export function patchChildren(
-  newChildren,
-  oldChildren,
-  { container, anchor, ...rest }
+  newChildren: VNode[],
+  oldChildren: VNode[],
+  { container, anchor, ...rest }: PatchContext
 ) {
   let s1 = 0
   let e1 = oldChildren.length - 1
@@ -39,7 +44,7 @@ export function patchChildren(
   let s2 = 0
   let e2 = newChildren.length - 1
 
-  let oldKeyMap = null
+  let oldKeyMap: null | Map<VNodeKey, any> = null
 
   while (s1 <= e1 && s2 <= e2) {
     const sNode1 = oldChildren[s1]
@@ -80,7 +85,7 @@ export function patchChildren(
         container,
         anchor
       })
-      insertElement(eNode2.el, container, getNextSibling(eNode1))
+      dom.insertElem(eNode2.el!, container, dom.getNextSiblingNode(eNode1))
       s1++
       e2--
     } else if (isSomeVNode(eNode1, sNode2)) {
@@ -91,28 +96,29 @@ export function patchChildren(
         container,
         anchor
       })
-      insertElement(sNode2.el, container, sNode1.el)
+      dom.insertElem(sNode2.el!, container, sNode1.el)
       s2++
       e1--
     } else {
       if (!oldKeyMap) {
         oldKeyMap = new Map()
         oldChildren.forEach((item, index) => {
+          const node = item
           if (
-            item.key !== undefined &&
-            item.key !== null &&
-            !Number.isNaN(item.key)
+            node.key !== undefined &&
+            node.key !== null &&
+            !Number.isNaN(node.key)
           ) {
-            oldKeyMap.set(item.key, index)
+            oldKeyMap!.set(node.key, index)
           }
         })
       }
 
-      const index = isUndefined(sNode2.key)
+      const index = isUndef(sNode2.key)
         ? findOldIndex(sNode2, oldChildren, s1, e1)
         : oldKeyMap.get(sNode2.key)
 
-      if (isUndefined(index)) {
+      if (isUndef(index)) {
         patch({
           ...rest,
           oldVNode: null,
@@ -130,15 +136,15 @@ export function patchChildren(
             container,
             anchor: sNode1.el
           })
-          insertElement(sNode2.el, container, sNode1.el)
-          oldChildren[index] = null
+          dom.insertElem(sNode2.el!, container, sNode1.el)
+          oldChildren[index] = null as any
         } else {
           patch({
             ...rest,
             oldVNode: null,
             newVNode: sNode2,
             container,
-            anchor: getNextSibling(oNode)
+            anchor: dom.getNextSiblingNode(oNode)
           })
           unmount(oNode)
         }
@@ -156,7 +162,7 @@ export function patchChildren(
         oldVNode: null,
         newVNode: node,
         container,
-        anchor: isUndefined(newChildren[e2 + 1]) ? null : newChildren[e2 + 1].el
+        anchor: isUndef(newChildren[e2 + 1]) ? null : newChildren[e2 + 1].el
       })
     }
   }
@@ -169,7 +175,7 @@ export function patchChildren(
   }
 }
 
-function findOldIndex(n, children, start, end) {
+function findOldIndex(n: VNode, children: VNode[], start: number, end: number) {
   for (let index = start; index <= end; index++) {
     const _n = children[index]
     if (_n !== null && n.type === _n.type) {

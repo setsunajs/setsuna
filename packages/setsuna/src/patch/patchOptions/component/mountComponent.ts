@@ -3,13 +3,16 @@ import { registryRecord } from "../../../hmr"
 import { appendJob } from "../../../scheduler"
 import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
-import { createRenderComponentEffect, RenderComponentEffect } from "./renderComponentEffect"
+import {
+  createRenderComponentEffect,
+  RenderComponentEffect
+} from "./renderComponentEffect"
 import { error } from "../../../handler/errorHandler"
 import { PatchContext } from "../../patch"
 import { VNode, VNodeChildren } from "../../../jsx"
 import { Observable } from "@setsunajs/observable"
 
-type ComponentContextValue = { state: unknown; input$: Observable }
+export type ComponentContextKey = string | number | symbol
 export type ComponentNode = {
   cid: number
   FC: (props: Record<any, any>) => () => VNode
@@ -24,7 +27,7 @@ export type ComponentNode = {
   mounts: Array<(...args: any[]) => any>
   unmounts: Array<(...args: any[]) => any>
   updates: Array<(...args: any[]) => any>
-  context: Record<string | symbol | number, ComponentContextValue>
+  context: Record<ComponentContextKey, Observable>
   mounted: boolean
   VNode: VNode
 }
@@ -89,12 +92,9 @@ export function mountComponent(context: PatchContext) {
 }
 
 function bindReactiveUpdate(input$: Observable, { update }: VNode) {
-  input$.subscribe(() => appendJob(update))
+  input$.subscribe(() => appendJob(update!))
 }
 
-function bindContextUpdate(
-  { input$ }: ComponentContextValue,
-  { update }: VNode
-) {
-  input$.subscribe(() => appendJob(update, true))
+function bindContextUpdate(input$: Observable, { update }: VNode) {
+  input$.subscribe(() => appendJob(update!, true))
 }

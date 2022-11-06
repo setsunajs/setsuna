@@ -12,7 +12,5 @@ export function updateFragment(context: PatchContext) {
     container: container ?? oldVNode.el
   })
   node.el = (node.children[0] as VNode).el
-  node.anchor = dom.getNextSiblingNode(
-    node.children.slice(-1)[0] as VNode
-  )
+  node.anchor = dom.getNextSiblingNode(node.children.slice(-1)[0] as VNode)
 }

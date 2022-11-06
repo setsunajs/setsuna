@@ -1,4 +1,4 @@
-import { VNode } from './../../../jsx';
+import { VNode } from "./../../../jsx"
 import { dom } from "../../../dom"
 import { patchProps } from "../../patchProps"
 import { unmount } from "../../unmount"

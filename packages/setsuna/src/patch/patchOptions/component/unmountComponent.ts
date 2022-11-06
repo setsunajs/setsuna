@@ -1,15 +1,16 @@
-import { VNode } from './../../../jsx';
+import { VNode } from "./../../../jsx"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { unmount } from "../../unmount"
-import { ComponentNode } from './mountComponent';
+import { ComponentNode } from "./mountComponent"
 
 export function unmountComponent(node: VNode) {
   const { update, _c: c } = node
-  const { observable, context, unmounts, subTree, parentComponent } = (c as ComponentNode)
+  const { observable, context, unmounts, subTree, parentComponent } =
+    c as ComponentNode
 
-  update.active = false
+  update!.active = false
   if (parentComponent) {
-    parentComponent.deps.delete(update)
+    parentComponent.deps.delete(update!)
   }
 
   observable.forEach(input$ => {
@@ -18,7 +19,7 @@ export function unmountComponent(node: VNode) {
 
   Reflect.ownKeys(context).forEach(key => {
     callWithErrorHandler(node, () => {
-      context[key].input$.complete()
+      context[key].complete()
     })
   })
 

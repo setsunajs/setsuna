@@ -29,7 +29,7 @@ export function hydrateFragment(context: PatchContext) {
   dom.removeElem(removeNode)
 
   const nextHydrateNode = hydrateChildren(
-    node.children,
+    node.children as VNode[],
     Object.assign(context, { hydrateNode })
   )
   node.el = (node.children[0] as VNode).el
