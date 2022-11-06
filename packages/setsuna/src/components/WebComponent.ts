@@ -1,17 +1,19 @@
+import { VNode } from './../jsx';
 import { nodeToString } from "../server/pipes/pipeNodeToString"
-import { _jsx } from "../jsx"
-import { removeElement } from "../dom"
+import { Component, jsx } from "../jsx"
+import { dom } from "../dom"
 import { ignoreElement } from "../patch/patchOptions/element/ignoreElement"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
-import { noop } from "@setsunajs/share"
+import { patch } from '../patch/patch';
+import { SSRRenderContext } from '../server/pipes/pipeNormalizeRenderContext';
 
-const records = window.__SETSUNA_CUSTOM_ELEMENT ?? new Map()
+const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 
 let sid = 0
 let rid = 0
 export const isWebComponent = Symbol("setsuna web component")
-export function defineElement(name, fc) {
+export function defineElement(name: string, fc: Component) {
   let record = records.get(name)
   if (record) {
     record.instance?.reload(fc)
@@ -20,13 +22,13 @@ export function defineElement(name, fc) {
 
   class TElement extends HTMLElement {
     static displayName = name
-    static ssrRender({ VNode: { props, children }, parentComponent }) {
+    static ssrRender({ VNode: { props, children }, parentComponent }: SSRRenderContext) {
       const tempBuf = nodeToString({
-        VNode: _jsx(fc, props),
+        VNode: jsx(fc, props),
         parentComponent: null
       })
       const tagBuf = nodeToString({
-        VNode: _jsx(name, Object.assign(props, { hydrate: true }), ...children),
+        VNode: jsx(name, Object.assign(props, { hydrate: true }), ...children),
         parentComponent
       })
       return [
@@ -37,9 +39,20 @@ export function defineElement(name, fc) {
       ]
     }
 
+    connected = false
+    props: Record<any, any>
+    shadow: ShadowRoot
+    fc?: Component
+    _VNode?: VNode
+
+    originGetAttribute?: Element["getAttribute"]
+    originSetAttribute?: Element["setAttribute"]
+    originRemoveAttribute?: Element["removeAttribute"]
+    originAddEventListener?: Element["addEventListener"]
+    originRemoveEventListener?: Element["removeEventListener"]
+
     constructor() {
       super()
-      this.connected = false
       this.fc = fc
       this.props = {}
       this.shadow = this.attachShadow({ mode: "open" })
@@ -55,37 +68,46 @@ export function defineElement(name, fc) {
         return
       }
 
-      render((this._VNode = this._createVNode()), this.shadow)
+      render((this._VNode = this._createVNode() as VNode), this.shadow)
       this.connected = true
     }
 
     hydrate() {
       this.shadow.innerHTML = templateMap.get(`${name}-${rid++}`)
-      hydrate((this._VNode = this._createVNode()), this.shadow)
+      hydrate((this._VNode = this._createVNode() as VNode), this.shadow)
       return this.nextSibling
     }
 
-    reload(fc) {
+    reload(fc: Component) {
       if (!this.connected) {
         return
       }
-      unmount(this._VNode)
+      unmount(this._VNode!)
       this.shadow.innerHTML = ""
       this.fc = fc
-      render((this._VNode = this._createVNode()), this.shadow)
+      render((this._VNode = this._createVNode() as VNode), this.shadow)
     }
 
     disconnectedCallback() {
-      unmount(this._VNode)
+      unmount(this._VNode!)
       this.shadow.innerHTML = ""
       this.connected = false
       this.props = {}
-      this.fc = null
-      this.root = null
-      this.getAttribute = this.originGetAttribute
-      this.setAttribute = this.originSetAttribute
-      this.addEventListener = this.originAddEventListener
-      this.removeEventListener = this.originRemoveAttribute
+
+      const undef = void 0
+      this.fc = undef
+
+      this.getAttribute = this.originGetAttribute as any
+      this.originGetAttribute = undef
+
+      this.setAttribute = this.originSetAttribute as any
+      this.originSetAttribute = undef
+
+      this.removeAttribute = this.originRemoveAttribute as any
+      this.originRemoveAttribute = undef
+
+      this.addEventListener = this.originAddEventListener as any
+      this.removeEventListener = this.originRemoveAttribute as any
     }
 
     initProxyMethod() {
@@ -99,7 +121,7 @@ export function defineElement(name, fc) {
       this.removeAttribute = this._removeAttribute
 
       this.originAddEventListener = this.addEventListener
-      this.addEventListener = this._setAttribute
+      this.addEventListener = this._setAttribute as any
 
       this.originRemoveEventListener = this.removeEventListener
       this.removeEventListener = this._removeAttribute
@@ -119,31 +141,31 @@ export function defineElement(name, fc) {
       })
     }
 
-    _setAttribute(key, value) {
+    _setAttribute(key: string, value: string) {
       if (value === this.props[key]) {
         return
       }
 
       if (typeof value === "number" || typeof value === "string") {
-        this.originSetAttribute(key, value)
+        this.originSetAttribute!(key, value)
       } else if (typeof value === "boolean") {
         value
-          ? this.originSetAttribute(key, "")
-          : this.originRemoveAttribute(key)
+          ? this.originSetAttribute!(key, "")
+          : this.originRemoveAttribute!(key)
       } else {
-        this.originRemoveAttribute(key)
+        this.originRemoveAttribute!(key)
       }
 
       this.props[key] = value
       this._update()
     }
 
-    _getAttribute(key) {
+    _getAttribute(key: string) {
       return this.props[key]
     }
 
-    _removeAttribute(key) {
-      this.originRemoveAttribute(key)
+    _removeAttribute(key: string) {
+      this.originRemoveAttribute!(key)
       this.props[key] = void 0
       this._update()
     }
@@ -153,21 +175,21 @@ export function defineElement(name, fc) {
         return
       }
 
-      const newVNode = this._createVNode()
-      const oldVNode = this._VNode
+      const newVNode = this._createVNode() as VNode
+      const oldVNode = this._VNode!
       patch({
         oldVNode,
         newVNode,
         container: this.shadow,
         anchor: null,
         parentComponent: null,
-        shallow: false
+        deep: false
       })
       this._VNode = newVNode
     }
 
     _createVNode() {
-      return _jsx(
+      return jsx(
         this.fc,
         new Proxy(this.props, {
           set(target, key, value, receiver) {
@@ -194,7 +216,7 @@ function initTemplateMap() {
   document.querySelectorAll("[component-name]").forEach(node => {
     if (node.nodeName === "TEMPLATE") {
       templateMap.set(node.getAttribute("component-name"), node.innerHTML)
-      removeElement(node)
+      dom.removeElem(node)
     }
   })
 }
