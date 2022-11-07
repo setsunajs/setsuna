@@ -6,7 +6,7 @@ import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
 import { patch } from "../patch/patch"
 import { SSRRenderContext } from "../server/pipes/pipeNormalizeRenderContext"
-import { webCustomElement } from "../patch/patchOptions/element/ignoreElement"
+import { webCustomElement } from "../patch/patchOptions/element/webCustomElement"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 

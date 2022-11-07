@@ -6,7 +6,7 @@ import { mountElement } from "./mountElement"
 import { normalizeElementNode } from "./normalizeElementNode"
 import { setElementRef } from "./setElementRef"
 import { PatchContext } from "../../patch"
-import { webCustomElement } from "./ignoreElement"
+import { webCustomElement } from "./webCustomElement"
 
 export function hydrateElement(context: PatchContext) {
   const node = context.newVNode!

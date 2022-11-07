@@ -8,7 +8,7 @@ import { renderTextElementToString } from "../render/renderTextElementToString"
 import { Await } from "../../components/Await"
 import { Fragment } from "../../components/Fragment"
 import { Teleport } from "../../components/Teleport"
-import { ignoreElement } from "../../patch/patchOptions/element/ignoreElement"
+import { webCustomElement } from "../../patch/patchOptions/element/webCustomElement"
 
 export function nodeToString(renderContext) {
   const type = renderContext.VNode.type
@@ -27,7 +27,7 @@ export function nodeToString(renderContext) {
     return renderTextElementToString(renderContext)
   } else if (isString(type)) {
     return renderElementToString(renderContext)
-  } else if (ignoreElement.has(type)) {
+  } else if (webCustomElement.has(type)) {
     return type.ssrRender(renderContext)
   }
   if (isFunction(type)) {
