@@ -2,22 +2,22 @@ import { VNode } from "./../jsx"
 import { nodeToString } from "../server/pipes/pipeNodeToString"
 import { jsx } from "../jsx"
 import { dom } from "../dom"
-import { ignoreElement } from "../patch/patchOptions/element/ignoreElement"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
 import { patch } from "../patch/patch"
 import { SSRRenderContext } from "../server/pipes/pipeNormalizeRenderContext"
+import { webCustomElement } from "../patch/patchOptions/element/ignoreElement"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 
 let sid = 0
 let rid = 0
 export const isWebComponent = Symbol("setsuna web component")
-export function defineElement(name: string, fc: Setsuna.FC) {
+export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
   let record = records.get(name)
   if (record) {
     record.instance?.reload(fc)
-    return { wrapper: () => record.element }
+    return { wrapper: (() => record.element) as () => Setsuna.FC<P> }
   }
 
   class TElement extends HTMLElement {
@@ -45,7 +45,7 @@ export function defineElement(name: string, fc: Setsuna.FC) {
     connected = false
     props: Record<any, any>
     shadow: ShadowRoot
-    fc?: Setsuna.FC
+    fc?: Setsuna.FC<any>
     _VNode?: VNode
 
     originGetAttribute?: Element["getAttribute"]
@@ -92,25 +92,22 @@ export function defineElement(name: string, fc: Setsuna.FC) {
     }
 
     disconnectedCallback() {
+      webCustomElement.delete(name)
+
       unmount(this._VNode!)
       this.shadow.innerHTML = ""
       this.connected = false
       this.props = {}
-
-      const undef = void 0
-      this.fc = undef
-
       this.getAttribute = this.originGetAttribute as any
-      this.originGetAttribute = undef
-
       this.setAttribute = this.originSetAttribute as any
-      this.originSetAttribute = undef
-
       this.removeAttribute = this.originRemoveAttribute as any
-      this.originRemoveAttribute = undef
-
       this.addEventListener = this.originAddEventListener as any
       this.removeEventListener = this.originRemoveAttribute as any
+      this.fc =
+        this.originGetAttribute =
+        this.originSetAttribute =
+        this.originRemoveAttribute =
+          void 0
     }
 
     initProxyMethod() {
@@ -207,11 +204,11 @@ export function defineElement(name: string, fc: Setsuna.FC) {
     }
   }
 
-  ignoreElement.set(TElement, true)
+  webCustomElement.set(name, true)
   records.set(name, (record = { element: TElement }))
   customElements.define(name, TElement)
 
-  return { wrapper: () => record.element }
+  return { wrapper: (() => record.element) as () => Setsuna.FC<P> }
 }
 
 let templateMap = new Map()

@@ -5,7 +5,6 @@ import { Fragment } from "../components/Fragment"
 import { isFunction, isString } from "@setsunajs/shared"
 import { unmountAwait } from "./patchOptions/await/unmountAwait"
 import { unmountComponent } from "./patchOptions/component/unmountComponent"
-import { ignoreElement } from "./patchOptions/element/ignoreElement"
 import { unmountELement } from "./patchOptions/element/unmountElement"
 import { unmountFragment } from "./patchOptions/fragment/unmountFragment"
 import { unmountTeleport } from "./patchOptions/teleport/unmountTeleport"
@@ -31,7 +30,7 @@ export function unmount(node: VNode) {
       unmountFragment(node)
       break
     default: {
-      if (isString(type) || ignoreElement.has(type)) {
+      if (isString(type)) {
         unmountELement(node)
       } else if (isFunction(type)) {
         unmountComponent(node)

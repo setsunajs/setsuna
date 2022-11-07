@@ -12,7 +12,7 @@ export function hydrateAwait(context: PatchContext) {
   const { children } = node
 
   let { hydrateNode } = context
-  hydrateNode = hydrateNode || container.firstChild
+  hydrateNode = hydrateNode ?? container.firstChild
   if (!hydrateNode || hydrateNode.textContent !== "Await") {
     error(
       "hydrate Await",

@@ -1,1 +1,1 @@
-export const ignoreElement = new WeakMap<any, any>()
+export const webCustomElement = new Map<string, boolean>()

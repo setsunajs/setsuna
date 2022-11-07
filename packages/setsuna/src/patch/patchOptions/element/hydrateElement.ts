@@ -2,11 +2,11 @@ import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
 import { hydrateChildren } from "../../patchChildren"
 import { hydrateProps, patchProps } from "../../patchProps"
-import { ignoreElement } from "./ignoreElement"
 import { mountElement } from "./mountElement"
 import { normalizeElementNode } from "./normalizeElementNode"
 import { setElementRef } from "./setElementRef"
 import { PatchContext } from "../../patch"
+import { webCustomElement } from "./ignoreElement"
 
 export function hydrateElement(context: PatchContext) {
   const node = context.newVNode!
@@ -14,7 +14,7 @@ export function hydrateElement(context: PatchContext) {
   const n = normalizeElementNode(node, false)
 
   const { type, children } = node
-  const isCustomWrapper = ignoreElement.has(type)
+  const isCustomWrapper = webCustomElement.has(type as string)
   const isCustomElement = isCustomWrapper || (type as string).includes("-")
 
   const el = (n.el = hydrateNode ?? container.firstChild)

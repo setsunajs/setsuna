@@ -30,7 +30,7 @@ export function isVNode(value: unknown): value is VNode {
 }
 
 export * from "./components/Fragment"
-export function jsx<P extends Record<any, any>>(
+export function jsx<P = {}>(
   type: VNode["type"],
   props: P,
   ...children: unknown[]
@@ -55,8 +55,8 @@ export function jsx<P extends Record<any, any>>(
   }
 
   if (isFunction(type)) {
-    VNode._hmrId = type.hmrId
-    VNode._file = type.file
+    VNode._hmrId = (type as Setsuna.FC).hmrId
+    VNode._file = (type as Setsuna.FC).file
   }
 
   return VNode

@@ -6,18 +6,23 @@ export as namespace Setsuna
 declare namespace Setsuna {
   type Key = number | string | symbol
 
-  interface SeElement<P, T extends SeElementType> {
+  type SeElement<
+    P = any,
+    T extends string | ((props: P) => () => SeElement<any, any> | null) =
+      | string
+      | ((props: P) => () => SeElement<any, any> | null)
+  > = {
     type: T
     props: P
     key: Key | null
   }
 
   type SeElementChildren = Array<
-    VNode | Promise<any> | ((...args: any[]) => any) | Function
+    VNode | Promise<any> | ((...args: any[]) => any) | Function | null
   >
 
   type FC<P = {}> = {
-    (props: P): () => SeElement<P>
+    (props: P): any
     hmrId?: string
     file?: string
   }
@@ -25,7 +30,7 @@ declare namespace Setsuna {
   type DOMElement = keyof JSX.IntrinsicElements | (string & {})
   type Teleport = FC<{ to: string | Element }>
   type Await = FC<{ active?: boolean | (() => boolean); fallback?: SeElement }>
-  type SeElementType = FC | DOMElement | Teleport | Await | "children" | "text"
+  type SeElementType = FC<any> | string | Fragment
 }
 
 /* 
@@ -1325,13 +1330,12 @@ type HTMLElements = {
 
 declare global {
   namespace JSX {
+    interface Element extends Setsuna.SeElement {}
     interface IntrinsicElements extends HTMLElements {
       [name: string]: any
     }
 
     interface IntrinsicAttributes extends SetsunaProps {}
-
-    interface Element extends Setsuna.SeElement {}
 
     interface ElementAttributesProperty {
       props: {}

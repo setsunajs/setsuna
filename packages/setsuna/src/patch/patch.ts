@@ -6,7 +6,6 @@ import { isFunction, isSomeVNode, isString } from "@setsunajs/shared"
 import { patchAwait } from "./patchOptions/await/patchAwait"
 import { patchSlot } from "./patchOptions/component/children"
 import { patchComponent } from "./patchOptions/component/patchComponent"
-import { ignoreElement } from "./patchOptions/element/ignoreElement"
 import { patchElement } from "./patchOptions/element/patchElement"
 import { patchFragment } from "./patchOptions/fragment/patchFragment"
 import { patchTeleport } from "./patchOptions/teleport/patchTeleport"
@@ -51,7 +50,7 @@ export function patch(patchContext: PatchContext) {
     case "children":
       return patchSlot(patchContext)
     default: {
-      if (isString(type) || ignoreElement.has(type)) {
+      if (isString(type)) {
         return patchElement(patchContext)
       } else if (isFunction(type)) {
         return patchComponent(patchContext)
