@@ -8,17 +8,14 @@ export type ElementNode = {
   ref?: Observable | null
   attrs: Record<any, any>
   children: Setsuna.SeElementChildren
-  VNode: VNode
 }
 
 export type AwaitNode = {
   id: number
-  VNode: VNode
   hydrating?: boolean
   hydrateNode?: ChildNode | null
   endHydrateNode?: ChildNode | null
 }
-
 
 export type TeleportNode = {
   Body: VNode

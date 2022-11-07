@@ -1,6 +1,6 @@
 import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
-import { hydrateChildren, mountChildren } from "../../patchChildren"
+import { hydrateChildren } from "../../patchChildren"
 import { hydrateProps, patchProps } from "../../patchProps"
 import { ignoreElement } from "./ignoreElement"
 import { mountElement } from "./mountElement"
@@ -17,7 +17,7 @@ export function hydrateElement(context: PatchContext) {
   const isCustomWrapper = ignoreElement.has(type)
   const isCustomElement = isCustomWrapper || (type as string).includes("-")
 
-  const el = (n.el = hydrateNode || container.firstChild)
+  const el = (n.el = hydrateNode ?? container.firstChild)
   if (!el) {
     error(
       "hydrate element",

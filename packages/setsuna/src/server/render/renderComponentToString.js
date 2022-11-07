@@ -29,7 +29,7 @@ export function renderComponentToString({ VNode, parentComponent }) {
 
   setCurrentInstance(_c)
   const render = (_c.render = callWithErrorHandler(VNode, type, props))
-  setCurrentInstance(null)
+  setCurrentInstance()
 
   if (!isFunction(render)) {
     error("component mount", `render 应为是一个函数`, [render])

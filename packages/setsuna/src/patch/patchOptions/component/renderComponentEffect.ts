@@ -9,7 +9,6 @@ import { ComponentNode } from "../patchNodeTypes"
 
 type RenderCompEffectOptions = {
   c: ComponentNode
-  anchor: VNode["anchor"]
   deep: boolean
   active: boolean
   hydrate: PatchContext["hydrate"]
@@ -22,8 +21,7 @@ export function createRenderComponentEffect(
   options: RenderCompEffectOptions | null
 ) {
   function renderComponentEffect() {
-    const { c, anchor, deep } = renderComponentEffect as RenderComponentEffect
-    let { hydrateNode, hydrate } =
+    let { c, deep, hydrateNode, hydrate } =
       renderComponentEffect as RenderComponentEffect
     const {
       render,
@@ -37,16 +35,14 @@ export function createRenderComponentEffect(
     } = c
 
     setCurrentInstance(c)
-    const nextSubTree = callWithErrorHandler(VNode, render!)
-    setCurrentInstance(null)
+    const nextSubTree: VNode | null = callWithErrorHandler(VNode, render!)
+    setCurrentInstance()
 
     if (mounted) {
       const updated: ((...args: any[]) => any)[] = []
       updates.forEach(updateFn => {
         const fn = callWithErrorHandler(VNode, updateFn)
-        if (isFunction(fn)) {
-          updated.push(fn)
-        }
+        if (isFunction(fn)) updated.push(fn)
       })
       updated.length > 0 && postQueue.push({ VNode, fns: updated })
 
@@ -54,25 +50,21 @@ export function createRenderComponentEffect(
         oldVNode: preSubTree,
         newVNode: (c.subTree = nextSubTree),
         container: container,
-        anchor,
+        anchor: VNode.anchor,
         parentComponent: c,
         deep
       })
-
-      const invalid: RenderComponentEffect[] = []
-      deps.forEach(u => (u.active ? appendJob(u) : invalid.push(u)))
-      invalid.forEach(u => deps.delete(u))
 
       VNode.el = nextSubTree ? nextSubTree.el : null
     } else {
       let nextNode = hydrateNode
 
-      if (nextSubTree !== null) {
+      if (nextSubTree) {
         nextNode = patch({
           oldVNode: null,
           newVNode: (c.subTree = nextSubTree),
           container,
-          anchor,
+          anchor: VNode.anchor,
           parentComponent: c,
           deep,
           hydrate,
@@ -81,7 +73,7 @@ export function createRenderComponentEffect(
       }
 
       VNode.el = nextSubTree?.el
-      VNode.anchor = nextSubTree ? dom.getNextSibling(nextSubTree) : null
+      VNode.anchor = nextSubTree ? dom.getNextSiblingNode(nextSubTree) : null
       Object.assign(c, {
         mounted: true,
         unmounts: mounts.map(fn => callWithErrorHandler(VNode, fn))

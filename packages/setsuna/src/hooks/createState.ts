@@ -1,4 +1,9 @@
-import { createObservable, Observable, ObservablePipeOperator, OB_FLAG } from "@setsunajs/observable"
+import {
+  createObservable,
+  Observable,
+  ObservablePipeOperator,
+  OB_FLAG
+} from "@setsunajs/observable"
 import { resolveObservableState, isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
@@ -60,7 +65,7 @@ export function createState<T>({
 }
 
 function pipeDiffState(input$: Observable) {
-  return function(value: any) {
+  return function (value: any) {
     const oldValue = effectState.get(input$)
     return Object.is(value, oldValue) ? OB_FLAG.SKIP : value
   }

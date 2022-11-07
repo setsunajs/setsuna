@@ -25,7 +25,7 @@ declare namespace Setsuna {
   type DOMElement = keyof JSX.IntrinsicElements | (string & {})
   type Teleport = FC<{ to: string | Element }>
   type Await = FC<{ active?: boolean | (() => boolean); fallback?: SeElement }>
-  type SeElementType = FC | DOMElement | Teleport | Await | "children" | "text" 
+  type SeElementType = FC | DOMElement | Teleport | Await | "children" | "text"
 }
 
 /* 

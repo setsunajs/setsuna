@@ -9,23 +9,17 @@ export function unmountComponent(node: VNode) {
     c as ComponentNode
 
   update!.active = false
-  if (parentComponent) {
-    parentComponent.deps.delete(update!)
-  }
+  if (parentComponent) parentComponent.deps.delete(update!)
 
   observable.forEach(input$ => {
     callWithErrorHandler(node, () => input$.complete())
   })
 
   Reflect.ownKeys(context).forEach(key => {
-    callWithErrorHandler(node, () => {
-      context[key].complete()
-    })
+    callWithErrorHandler(node, () => context[key].complete())
   })
 
-  if (subTree) {
-    unmount(subTree)
-  }
+  if (subTree) unmount(subTree)
 
   unmounts.forEach(fn => callWithErrorHandler(node, fn))
   c.container = c.VNode.el = null

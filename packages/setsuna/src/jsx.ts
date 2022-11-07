@@ -81,9 +81,7 @@ export function normalizeChildren(children: unknown[]) {
 function normalizeChild(child: unknown, ctx: NormalizeChildContext) {
   // child maybe false、[], they are created jsx function
   // but only null | undefined need nothing to do
-  if (child === null || child === undefined) {
-    return
-  }
+  if (child === null || child === undefined) return
 
   if (isVNode(child) || isPromise(child) || isFunction(child)) {
     if (ctx.text.length > 0) {

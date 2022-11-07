@@ -10,7 +10,7 @@ export function hydrateFragment(context: PatchContext) {
   const container = context.container
 
   let { hydrateNode } = context
-  hydrateNode = hydrateNode || container.firstChild
+  hydrateNode = hydrateNode ?? container.firstChild
 
   if (!hydrateNode || hydrateNode.textContent !== "Fragment") {
     error(

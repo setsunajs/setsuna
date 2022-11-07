@@ -16,7 +16,6 @@ export function updateAwait(context: PatchContext) {
 
   node.children = oldVNode.children
   node.el = oldVNode.el
-  n.VNode = node
 
   if (n.hydrating) {
     const _nodes = resolveNextNodes(n.hydrateNode!, "Await")!
@@ -34,13 +33,8 @@ export function updateAwait(context: PatchContext) {
   }
 
   const _active = node.props.active
-  const active = isFunction(_active)
-    ? callWithErrorHandler(node, _active)
-    : _active
-
-  if (!active) {
+  if (!(isFunction(_active) ? callWithErrorHandler(node, _active) : _active))
     return
-  }
 
   n.id += 1
 
@@ -52,16 +46,15 @@ export function updateAwait(context: PatchContext) {
         Promise.resolve(isFunction(content) ? content() : content)
       )
     ).then(_children => {
-      if (n.id - 1 !== id) {
-        return
-      }
+      if (n.id - 1 !== id) return
 
-      const newVNode = {
-        ...n.VNode,
-        children: normalizeChildren(_children)
-      }
-      patchFragment({ ...context, oldVNode: n.VNode, newVNode: newVNode })
-      Object.assign(n.VNode, newVNode)
+      const newChildren = normalizeChildren(_children)
+      patchFragment({
+        ...context,
+        oldVNode: node,
+        newVNode: { ...node, children: newChildren }
+      })
+      node.children = newChildren
     })
   } else {
     node.children = normalizeChildren(children)

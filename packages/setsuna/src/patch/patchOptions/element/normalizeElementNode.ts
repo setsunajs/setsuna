@@ -14,7 +14,6 @@ export function normalizeElementNode(
     tag,
     ref: props.ref,
     attrs: excludes(props, key => key === "ref"),
-    children,
-    VNode: node
+    children
   })
 }

@@ -5,6 +5,6 @@ import { ElementNode } from "../patchNodeTypes"
 export function setElementRef(e: ElementNode) {
   if (e.ref) {
     const input$ = (e.ref = resolveObservableState(e.ref))
-    input$ ? input$.next(e.el) : error("Element ref", `ref is invalid`, [e.ref])
+    input$ ? input$.next(e.el) : error("Element", `ref is invalid`, [e.ref])
   }
 }
