@@ -7,8 +7,8 @@ import { error } from "../../../handler/errorHandler"
 import { normalizeChildren } from "../../../jsx"
 
 export function hydrateAwait(context: PatchContext) {
-  const { container } = context
   const node = context.newVNode!
+  const { container } = context
   const { children } = node
 
   let { hydrateNode } = context
@@ -16,7 +16,7 @@ export function hydrateAwait(context: PatchContext) {
   if (!hydrateNode || hydrateNode.textContent !== "Await") {
     error(
       "hydrate Await",
-      `node mismatch, expected '<Await />'，却匹配到'${
+      `node mismatch, expected '<Await />', but expected '${
         hydrateNode ? hydrateNode.nodeName : "null"
       }'`
     )

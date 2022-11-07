@@ -5,7 +5,7 @@ import { isFunction } from "@setsunajs/shared"
 import { patch, PatchContext } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
 import { dom } from "../../../dom"
-import { ComponentNode } from "./mountComponent"
+import { ComponentNode } from "../patchNodeTypes"
 
 type RenderCompEffectOptions = {
   c: ComponentNode
@@ -48,7 +48,7 @@ export function createRenderComponentEffect(
           updated.push(fn)
         }
       })
-      updated.length > 0 && postQueue.push({ VNode, updated })
+      updated.length > 0 && postQueue.push({ VNode, fns: updated })
 
       patch({
         oldVNode: preSubTree,

@@ -1,7 +1,6 @@
 import { dom } from "../../../dom"
 import { PatchContext } from "../../patch"
-import { TextNode } from "./mountTextElement"
-
+import { TextNode } from "../patchNodeTypes"
 export function updateTextElement(context: PatchContext) {
   const node = context.newVNode!
   const oldVNode = context.oldVNode!

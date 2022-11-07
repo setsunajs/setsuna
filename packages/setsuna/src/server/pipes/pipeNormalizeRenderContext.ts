@@ -1,8 +1,11 @@
-import type { Component, VNode } from '../../jsx';
+import Setsuna from "packages/setsuna/jsx"
+import type { VNode } from "../../jsx"
 import { isVNode } from "../../jsx"
 
-
-export type SSRRenderContext = { VNode: VNode, parentComponent: null | Component }
+export type SSRRenderContext = {
+  VNode: VNode
+  parentComponent: null | Setsuna.FC
+}
 export function pipeNormalizeRenderContext(VNode: VNode) {
   if (!isVNode(VNode)) {
     throw Error(

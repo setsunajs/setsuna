@@ -2,11 +2,11 @@ import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
 import { mountTextElement } from "./mountTextElement"
 import { PatchContext } from "../../patch"
-import { TextNode } from "./mountTextElement"
+import { TextNode } from "../patchNodeTypes"
 
 export function hydrateTextElement(context: PatchContext) {
-  const { container } = context
   const node = context.newVNode!
+  const { container } = context
 
   let { hydrateNode } = context
   hydrateNode = hydrateNode ?? container.firstChild

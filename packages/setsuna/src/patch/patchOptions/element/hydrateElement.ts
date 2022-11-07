@@ -9,14 +9,13 @@ import { setElementRef } from "./setElementRef"
 import { PatchContext } from "../../patch"
 
 export function hydrateElement(context: PatchContext) {
-  const { container, hydrateNode } = context
   const node = context.newVNode!
+  const { container, hydrateNode } = context
   const n = normalizeElementNode(node, false)
 
   const { type, children } = node
-
   const isCustomWrapper = ignoreElement.has(type)
-  const isCustomElement = isCustomWrapper || type.includes("-")
+  const isCustomElement = isCustomWrapper || (type as string).includes("-")
 
   const el = (n.el = hydrateNode || container.firstChild)
   if (!el) {
@@ -42,8 +41,8 @@ export function hydrateElement(context: PatchContext) {
   }
 
   !isCustomWrapper && !isCustomElement
-    ? hydrateProps(el, n.attrs)
-    : patchProps(n.el, n.attrs, {})
+    ? hydrateProps(el as Element, n.attrs)
+    : patchProps(n.el as Element, n.attrs, {})
 
   hydrateChildren(children, { ...context, hydrateNode: null, container: el })
 

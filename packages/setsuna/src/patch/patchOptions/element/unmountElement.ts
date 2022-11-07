@@ -9,10 +9,7 @@ export function unmountELement(node: VNode) {
 
   n.children.forEach(unmount)
 
-  if (!el) {
-    // hmr. el is null/undefined
-    return
-  }
+  if (!el) return // hmr. el is null/undefined
 
   if (ref) {
     n.ref = null

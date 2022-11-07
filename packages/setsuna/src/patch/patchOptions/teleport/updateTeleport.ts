@@ -2,8 +2,9 @@ import { VNode } from "./../../../jsx"
 import { Fragment } from "../../../components/Fragment"
 import { jsx } from "../../../jsx"
 import { patch, PatchContext } from "../../patch"
-import { mountTeleport, TeleportNode } from "./mountTeleport"
+import { mountTeleport } from "./mountTeleport"
 import { unmountTeleport } from "./unmountTeleport"
+import { TeleportNode } from "../patchNodeTypes"
 
 export function updateTeleport(context: PatchContext) {
   const { deep } = context
@@ -20,10 +21,7 @@ export function updateTeleport(context: PatchContext) {
 
   patch({
     oldVNode: n.Body,
-    newVNode: (n.Body = jsx(
-      () => () => jsx(Fragment, {}, node.children),
-      {}
-    ) as VNode),
+    newVNode: (n.Body = jsx(() => () => jsx(Fragment, {}, node.children), {})),
     container: n.container,
     deep
   })

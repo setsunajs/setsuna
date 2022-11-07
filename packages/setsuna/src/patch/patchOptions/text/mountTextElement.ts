@@ -1,13 +1,11 @@
 import { dom } from "../../../dom"
 import { PatchContext } from "../../patch"
+import { TextNode } from "../patchNodeTypes"
 
-export type TextNode = {
-  content: string
-}
 
 export function mountTextElement(context: PatchContext) {
-  const { container, anchor } = context
   const node = context.newVNode!
+  const { container, anchor } = context
   const content = node.text
   const el = dom.createTextElem(content)
   const textNode: TextNode = { content }

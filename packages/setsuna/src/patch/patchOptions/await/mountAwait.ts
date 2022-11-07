@@ -3,14 +3,8 @@ import { normalizeChildren } from "../../../jsx"
 import { isFunction, isPromise } from "@setsunajs/shared"
 import { patchFragment } from "../fragment/patchFragment"
 import { PatchContext } from "../../patch"
+import { AwaitNode } from "../patchNodeTypes"
 
-export type AwaitNode = {
-  id: number
-  VNode: VNode
-  hydrating?: boolean
-  hydrateNode?: ChildNode | null
-  endHydrateNode?: ChildNode | null
-}
 
 export function mountAwait(context: PatchContext) {
   const node = context.newVNode!

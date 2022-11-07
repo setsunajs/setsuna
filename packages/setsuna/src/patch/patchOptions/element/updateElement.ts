@@ -1,7 +1,7 @@
 import { PatchContext } from "../../patch"
 import { patchChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
-import { ElementNode } from "./mountElement"
+import { ElementNode } from "../patchNodeTypes"
 import { normalizeElementNode } from "./normalizeElementNode"
 
 export function updateElement(context: PatchContext) {
@@ -11,12 +11,12 @@ export function updateElement(context: PatchContext) {
   const n = normalizeElementNode(node, false)
 
   n.el = on.el
-  patchProps(n.el, n.attrs, on.attrs)
+  patchProps(n.el as Element, n.attrs, on.attrs)
   patchChildren(n.children, on.children, {
     ...context,
     newVNode: null,
     oldVNode: null,
-    container: n.el
+    container: n.el!
   })
   node.el = oldVNode.el
 }

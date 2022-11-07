@@ -13,5 +13,5 @@ export function updateComponent(context: PatchContext) {
   c.slot = node.children
   c.VNode = node
 
-  deep ? appendJob(update, (update.deep = true)) : appendJob(update)
+  deep ? appendJob(update!, (update!.deep = true)) : appendJob(update!)
 }

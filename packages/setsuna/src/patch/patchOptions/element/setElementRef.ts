@@ -1,6 +1,6 @@
 import { resolveObservableState } from "@setsunajs/shared"
-import { ElementNode } from "./mountElement"
 import { error } from "../../../handler/errorHandler"
+import { ElementNode } from "../patchNodeTypes"
 
 export function setElementRef(e: ElementNode) {
   if (e.ref) {

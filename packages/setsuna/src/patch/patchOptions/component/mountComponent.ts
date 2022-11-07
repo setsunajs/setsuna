@@ -3,34 +3,12 @@ import { registryRecord } from "../../../hmr"
 import { appendJob } from "../../../scheduler"
 import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
-import {
-  createRenderComponentEffect,
-  RenderComponentEffect
-} from "./renderComponentEffect"
+import { createRenderComponentEffect } from "./renderComponentEffect"
 import { error } from "../../../handler/errorHandler"
 import { PatchContext } from "../../patch"
-import { VNode, VNodeChildren } from "../../../jsx"
+import { VNode } from "../../../jsx"
 import { Observable } from "@setsunajs/observable"
-
-export type ComponentContextKey = string | number | symbol
-export type ComponentNode = {
-  cid: number
-  FC: (props: Record<any, any>) => () => VNode
-  props: Record<any, any>
-  container: Node
-  parentComponent: ComponentNode
-  slot: VNodeChildren
-  subTree: VNode | null
-  render: (() => VNode) | null
-  observable: Array<Observable>
-  deps: Set<RenderComponentEffect>
-  mounts: Array<(...args: any[]) => any>
-  unmounts: Array<(...args: any[]) => any>
-  updates: Array<(...args: any[]) => any>
-  context: Record<ComponentContextKey, Observable>
-  mounted: boolean
-  VNode: VNode
-}
+import { ComponentNode } from "../patchNodeTypes"
 
 let cid = 0
 export function mountComponent(context: PatchContext) {
@@ -40,7 +18,7 @@ export function mountComponent(context: PatchContext) {
   const { type, props, children } = node
   const c: ComponentNode = (node._c = {
     cid: cid++,
-    FC: type,
+    FC: type as Setsuna.FC,
     props,
     container,
     parentComponent,
@@ -73,7 +51,7 @@ export function mountComponent(context: PatchContext) {
   }
 
   setCurrentInstance(c)
-  let render = callWithErrorHandler(node, type, _props)
+  let render = callWithErrorHandler(node, c.FC, _props)
   setCurrentInstance(null)
 
   if (!isFunction(render)) {

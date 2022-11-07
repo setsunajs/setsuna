@@ -5,13 +5,7 @@ import { render } from "../../../render"
 import { isString } from "@setsunajs/shared"
 import { error } from "../../../handler/errorHandler"
 import { PatchContext } from "../../patch"
-
-export type TeleportNode = {
-  Body: VNode
-  container: Node
-  to: string | Node
-  VNode: VNode
-}
+import { TeleportNode } from "../patchNodeTypes"
 
 export function mountTeleport(context: PatchContext) {
   const node = context.newVNode!
@@ -21,11 +15,10 @@ export function mountTeleport(context: PatchContext) {
     : to instanceof Element
     ? to
     : null
-  if (!container) {
+  if (!container)
     return error("Teleport", "Teleport props.to ss not a valid selector")
-  }
 
-  const Body = jsx(() => () => jsx(Fragment, {}, node.children), {}) as VNode
+  const Body = jsx(() => () => jsx(Fragment, {}, node.children), {})
   const teleportNode: TeleportNode = { Body, container, VNode: node, to }
 
   render(Body, container)

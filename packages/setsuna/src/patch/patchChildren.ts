@@ -1,4 +1,4 @@
-import { VNode, VNodeChildren, VNodeKey } from "../jsx"
+import { VNode } from "../jsx"
 import { dom } from "../dom"
 import { isSomeVNode, isUndef } from "@setsunajs/shared"
 import { patch, PatchContext } from "./patch"
@@ -6,9 +6,7 @@ import { unmount } from "./unmount"
 
 export function mountChildren(children: VNode[], options: PatchContext) {
   const size = children.length
-  if (size === 0) {
-    return
-  }
+  if (size === 0) return
 
   for (let i = 0; i < size; i++) {
     patch({ ...options, newVNode: children[i] })
@@ -17,9 +15,7 @@ export function mountChildren(children: VNode[], options: PatchContext) {
 
 export function hydrateChildren(children: VNode[], options: PatchContext) {
   const size = children.length
-  if (size === 0) {
-    return null
-  }
+  if (size === 0) return null
 
   let hydrateNode = options.hydrateNode ?? options.container.firstChild
   for (let i = 0; i < children.length; i++) {
@@ -44,7 +40,7 @@ export function patchChildren(
   let s2 = 0
   let e2 = newChildren.length - 1
 
-  let oldKeyMap: null | Map<VNodeKey, any> = null
+  let oldKeyMap: null | Map<Setsuna.Key, any> = null
 
   while (s1 <= e1 && s2 <= e2) {
     const sNode1 = oldChildren[s1]

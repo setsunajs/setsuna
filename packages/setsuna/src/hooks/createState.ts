@@ -2,13 +2,12 @@ import { createObservable, ObservablePipeOperator } from "@setsunajs/observable"
 import { resolveObservableState, isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
-import { ComponentContextKey } from "../patch/patchOptions/component/mountComponent"
 
 type Options<T> = {
   value: T
   pipes: ObservablePipeOperator<T, T>[]
   needObserver?: boolean
-  key?: ComponentContextKey
+  key?: Setsuna.Key
   deep?: boolean
 }
 
@@ -39,7 +38,13 @@ export function createState<T>({
 
   const state = () => {
     const activeContext = getCurrentInstance()
-    if (needObserver && originContext !== activeContext && !deep) {
+    if (
+      originContext &&
+      activeContext &&
+      needObserver &&
+      originContext !== activeContext &&
+      !deep
+    ) {
       originContext.deps.add(activeContext.VNode.update!)
     }
 

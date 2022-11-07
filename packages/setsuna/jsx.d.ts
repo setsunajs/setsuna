@@ -1,4 +1,32 @@
+import { Fragment } from "./src/components/Fragment"
 import * as CSS from "csstype"
+
+export = Setsuna
+export as namespace Setsuna
+declare namespace Setsuna {
+  type Key = number | string | symbol
+
+  interface SeElement<P, T extends SeElementType> {
+    type: T
+    props: P
+    key: Key | null
+  }
+
+  type SeElementChildren = Array<
+    VNode | Promise<any> | ((...args: any[]) => any) | Function
+  >
+
+  type FC<P = {}> = {
+    (props: P): () => SeElement<P>
+    hmrId?: string
+    file?: string
+  }
+  type Fragment = typeof Fragment
+  type DOMElement = keyof JSX.IntrinsicElements | (string & {})
+  type Teleport = FC<{ to: string | Element }>
+  type Await = FC<{ active?: boolean | (() => boolean); fallback?: SeElement }>
+  type SeElementType = FC | DOMElement | Teleport | Await | "children" | "text" 
+}
 
 /* 
   Element
@@ -1303,7 +1331,7 @@ declare global {
 
     interface IntrinsicAttributes extends SetsunaProps {}
 
-    interface Element {}
+    interface Element extends Setsuna.SeElement {}
 
     interface ElementAttributesProperty {
       props: {}

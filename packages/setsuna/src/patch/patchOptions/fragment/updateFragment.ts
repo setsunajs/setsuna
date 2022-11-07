@@ -4,13 +4,13 @@ import { PatchContext } from "../../patch"
 import { patchChildren } from "../../patchChildren"
 
 export function updateFragment(context: PatchContext) {
-  const { container, ...rest } = context
   const node = context.newVNode!
   const oldVNode = context.oldVNode!
+  const { container, ...rest } = context
   patchChildren(oldVNode.children, node.children, {
     ...rest,
     container: container ?? oldVNode.el
   })
   node.el = (node.children[0] as VNode).el
-  node.anchor = dom.getNextSiblingNode(node.children.slice(-1)[0] as VNode)
+  node.anchor = dom.getNextSiblingNode(node.children.at(-1) as VNode)
 }

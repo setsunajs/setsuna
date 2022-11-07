@@ -1,19 +1,19 @@
-import { VNode } from './../jsx';
+import { VNode } from "./../jsx"
 import { nodeToString } from "../server/pipes/pipeNodeToString"
-import { Component, jsx } from "../jsx"
+import { jsx } from "../jsx"
 import { dom } from "../dom"
 import { ignoreElement } from "../patch/patchOptions/element/ignoreElement"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
-import { patch } from '../patch/patch';
-import { SSRRenderContext } from '../server/pipes/pipeNormalizeRenderContext';
+import { patch } from "../patch/patch"
+import { SSRRenderContext } from "../server/pipes/pipeNormalizeRenderContext"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 
 let sid = 0
 let rid = 0
 export const isWebComponent = Symbol("setsuna web component")
-export function defineElement(name: string, fc: Component) {
+export function defineElement(name: string, fc: Setsuna.FC) {
   let record = records.get(name)
   if (record) {
     record.instance?.reload(fc)
@@ -22,7 +22,10 @@ export function defineElement(name: string, fc: Component) {
 
   class TElement extends HTMLElement {
     static displayName = name
-    static ssrRender({ VNode: { props, children }, parentComponent }: SSRRenderContext) {
+    static ssrRender({
+      VNode: { props, children },
+      parentComponent
+    }: SSRRenderContext) {
       const tempBuf = nodeToString({
         VNode: jsx(fc, props),
         parentComponent: null
@@ -42,7 +45,7 @@ export function defineElement(name: string, fc: Component) {
     connected = false
     props: Record<any, any>
     shadow: ShadowRoot
-    fc?: Component
+    fc?: Setsuna.FC
     _VNode?: VNode
 
     originGetAttribute?: Element["getAttribute"]
@@ -68,24 +71,24 @@ export function defineElement(name: string, fc: Component) {
         return
       }
 
-      render((this._VNode = this._createVNode() as VNode), this.shadow)
+      render((this._VNode = this._createVNode()), this.shadow)
       this.connected = true
     }
 
     hydrate() {
       this.shadow.innerHTML = templateMap.get(`${name}-${rid++}`)
-      hydrate((this._VNode = this._createVNode() as VNode), this.shadow)
+      hydrate((this._VNode = this._createVNode()), this.shadow)
       return this.nextSibling
     }
 
-    reload(fc: Component) {
+    reload(fc: Setsuna.FC) {
       if (!this.connected) {
         return
       }
       unmount(this._VNode!)
       this.shadow.innerHTML = ""
       this.fc = fc
-      render((this._VNode = this._createVNode() as VNode), this.shadow)
+      render((this._VNode = this._createVNode()), this.shadow)
     }
 
     disconnectedCallback() {
@@ -175,7 +178,7 @@ export function defineElement(name: string, fc: Component) {
         return
       }
 
-      const newVNode = this._createVNode() as VNode
+      const newVNode = this._createVNode()
       const oldVNode = this._VNode!
       patch({
         oldVNode,
@@ -190,7 +193,7 @@ export function defineElement(name: string, fc: Component) {
 
     _createVNode() {
       return jsx(
-        this.fc,
+        this.fc!,
         new Proxy(this.props, {
           set(target, key, value, receiver) {
             if (!(key in target)) {

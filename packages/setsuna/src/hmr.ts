@@ -17,10 +17,7 @@ export function registryRecord(
   renderEffect: RenderComponentEffect
 ) {
   let record = records.get(id)
-  if (!record) {
-    records.set(id, (record = new Set()))
-  }
-
+  if (!record) records.set(id, (record = new Set()))
   record.add(renderEffect)
 }
 
@@ -30,9 +27,7 @@ export function invokeReload(App: any) {
   }
 
   const appRecord = records.get(App.hmrId)
-  if (!appRecord) {
-    return
-  }
+  if (!appRecord) return
 
   const deps = [...appRecord]
   appRecord.clear()

@@ -5,27 +5,16 @@ import {
   isPromise,
   excludes
 } from "@setsunajs/shared"
+import Setsuna from "../jsx"
 import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
 
-export type Component<P = {}> = {
-  (props: P): SeElement<P>
-  hmrId?: string
-  file?: string
-}
-export type DOMString = string
-export type EmptyNode = null
-export type VNodeType<P = any> = Component<P> | DOMString | EmptyNode | any
-export type VNodeKey = number | string | symbol
-export type VNodeChildren = Array<
-  VNode | Promise<any> | ((...args: any[]) => any) | Function
->
 export type VNode = {
-  type: VNodeType<any>
-  key: VNodeKey
+  type: Setsuna.SeElementType
+  key: Setsuna.Key
   props: Record<any, any>
   text: string
-  children: VNodeChildren
-  el?: Element | null
+  children: Setsuna.SeElementChildren
+  el?: Node | null
   anchor?: Node | null
   _c: any
   _n: any
@@ -35,13 +24,6 @@ export type VNode = {
   update?: RenderComponentEffect
 }
 
-export type SeElement<P = {}> = {
-  type: VNodeType<P>
-  key: VNodeKey
-  props: P
-  children: SeElement[]
-}
-
 export const _node_flag = "__se_VNode"
 export function isVNode(value: unknown): value is VNode {
   return isPlainObject(value) && value[_node_flag]
@@ -49,7 +31,7 @@ export function isVNode(value: unknown): value is VNode {
 
 export * from "./components/Fragment"
 export function jsx<P extends Record<any, any>>(
-  type: VNodeType<any>,
+  type: VNode["type"],
   props: P,
   ...children: unknown[]
 ) {
@@ -77,11 +59,11 @@ export function jsx<P extends Record<any, any>>(
     VNode._file = type.file
   }
 
-  return VNode as any as SeElement<P>
+  return VNode
 }
 
 type NormalizeChildContext = {
-  childrenNodes: VNodeChildren
+  childrenNodes: Setsuna.SeElementChildren
   text: string
 }
 export function normalizeChildren(children: unknown[]) {
