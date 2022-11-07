@@ -1,11 +1,12 @@
-import { createObservable, ObservablePipeOperator } from "@setsunajs/observable"
+import { createObservable, Observable, ObservablePipeOperator, OB_FLAG } from "@setsunajs/observable"
 import { resolveObservableState, isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
+import { effectState } from "../patch/patchOptions/component/effectState"
 
 type Options<T> = {
   value: T
-  pipes: ObservablePipeOperator<T, T>[]
+  pipes?: ObservablePipeOperator<T, T>[]
   needObserver?: boolean
   key?: Setsuna.Key
   deep?: boolean
@@ -27,7 +28,7 @@ export function createState<T>({
   }
 
   const input$ = createObservable<T>(resolveObservableState(value))
-  input$.pipe.apply(null, pipes as any)
+  input$.pipe.apply(null, [pipeDiffState, ...pipes] as any)
 
   const originContext = getCurrentInstance()
   if (needObserver && originContext) {
@@ -50,7 +51,17 @@ export function createState<T>({
 
     return input$.value
   }
-  const setState = (nValue: T) => input$.next(nValue)
+  const setState = async (nValue: T) => {
+    effectState.set(input$, input$.value)
+    return input$.next(nValue)
+  }
 
   return [state, setState] as [HookState<T>, HookSetState<T>]
+}
+
+function pipeDiffState(input$: Observable) {
+  return function(value: any) {
+    const oldValue = effectState.get(input$)
+    return Object.is(value, oldValue) ? OB_FLAG.SKIP : value
+  }
 }

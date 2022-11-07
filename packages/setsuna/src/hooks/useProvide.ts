@@ -1,13 +1,13 @@
 import { ObservablePipeOperator } from "@setsunajs/observable"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
-import { ComponentContextKey } from "../patch/patchOptions/component/mountComponent"
+import { ComponentContextKey } from "../patch/patchOptions/patchNodeTypes"
 import { createState } from "./createState"
 
 export function useProvide<T>(
   key: ComponentContextKey,
   value: T,
-  pipes: ObservablePipeOperator<T, T>[] = []
+  pipes: ObservablePipeOperator<T, T>[]
 ) {
   const activeMountContext = getCurrentInstance()
   if (!activeMountContext) {

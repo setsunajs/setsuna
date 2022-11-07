@@ -16,10 +16,10 @@ export function useComputed<T>(
   pipes: ObservablePipeOperator<T, T>[] = []
 ) {
   let getter = () => {
-    return error("hook-useComputed", "getter is undefined")
+    return error("hook-useComputed", "get failed, getter is undefined")
   }
   let setter = () => {
-    return error("hook-useComputed", "setter is undefined")
+    return error("hook-useComputed", "set failed, setter is undefined")
   }
 
   if (isFunction(options)) {
@@ -29,11 +29,11 @@ export function useComputed<T>(
     isFunction(options.set) && (setter = options.set)
   }
 
-  const [_, setState] = createState<T>({ value: 0 as any, pipes })
+  const [state, setState] = createState<T>({ value: getter() as any, pipes })
   useEffect(observables, () => {
     setter()
-    setState(Math.random() as any)
+    setState(getter() as any)
   })
 
-  return [getter, setter]
+  return [state, setter]
 }
