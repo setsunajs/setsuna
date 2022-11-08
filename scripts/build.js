@@ -1,12 +1,15 @@
 import chalk from "chalk"
 import { build as _build } from "esbuild"
-import { rm, readdir } from "node:fs/promises"
+import { rm } from "node:fs/promises"
 import { execa } from "execa"
 import { Extractor, ExtractorConfig } from "@microsoft/api-extractor"
 import { print, success, resolve } from "./helper.js"
-import { readdirSync, readFileSync, writeFileSync } from "node:fs"
+import { readFileSync, writeFileSync } from "node:fs"
 import inquirer from "inquirer"
-import { config } from "node:process"
+import minimist from "minimist"
+import { minify } from "terser"
+
+const { mod = "prod" } = minimist(process.argv.slice(2))
 
 let { options } = await inquirer.prompt([
   {
@@ -16,6 +19,7 @@ let { options } = await inquirer.prompt([
     default: ["all"]
   }
 ])
+
 if (options.includes("all")) {
   options = ["setsuna"]
 }
@@ -23,54 +27,75 @@ if (options.includes("all")) {
 const pkgConfigs = {
   setsuna: [
     {
-      dts: {
-        entityName: "main",
-        outName: "setsuna"
-      },
-      entityFile: "/src/main.ts",
-      outputFile: "/dist/setsuna",
+      name: "setsuna",
+      dir: resolve("./packages/setsuna"),
+      main: resolve("./packages/setsuna/src/main.ts"),
+      output: resolve("./packages/setsuna/dist/setsuna"),
+      dtsMain: "./dist/temp/main.d.ts",
       formats: ["esm", "cjs"]
     }
   ]
 }
 
 async function build(target) {
-  const targetDir = resolve(`./packages/${target}`)
   const configs = pkgConfigs[target]
 
   print("pre build...")
-  await rm(targetDir + "/dist", { recursive: true, force: true })
+  await rm(resolve(`./packages/${target}/dist`), {
+    recursive: true,
+    force: true
+  })
   success("pre build success")
 
   print("start code build...")
   await Promise.all(
     configs
-      .map(config => {
-        return config.formats.map(format => {
-          const _config = {
-            entity: resolve(`./packages/${target}${config.entityFile}`),
-            output: resolve(`./packages/${target}${config.outputFile}`)
-          }
-          return _build(createConfig({ format, ..._config }))
-        })
-      })
+      .map(config =>
+        config.formats.map(format =>
+          _build(createConfig({ ...config, format, prod: false }))
+        )
+      )
       .flat()
   )
+  if (mod === "prod") {
+    await Promise.all(
+      configs
+        .map(config =>
+          config.formats.map(format =>
+            _build(createConfig({ ...config, format, prod: true })).then(
+              async () => {
+                const filePath = `${config.output}.prod${ext[format]}`
+                const code = await minify(readFileSync(filePath, "utf-8"), {
+                  ecma: "es2017",
+                  module: true,
+                  toplevel: false
+                })
+                writeFileSync(filePath, code.code, "utf-8")
+              }
+            )
+          )
+        )
+        .flat()
+    )
+  }
   success("code build success")
 
   print("start type build...")
   await configs.reduce((preWork, config) => {
-    return preWork.then(() => buildType({ ...config.dts, targetDir }))
+    return preWork.then(() => buildType(config))
   }, Promise.resolve())
-  await rm(`${targetDir}/dist/temp`, { force: true, recursive: true })
+  await rm(resolve(`./packages/${target}/dist/temp`), {
+    force: true,
+    recursive: true
+  })
   success("type build success")
 }
 
 const ext = { esm: ".js", cjs: ".cjs", iife: ".global.js" }
-function createConfig({ format, entity, output }) {
+function createConfig({ format, main, output, prod }) {
   return {
-    outfile: `${output}${ext[format]}`,
-    entryPoints: [entity],
+    entryPoints: [main],
+    outfile: `${output}${prod ? ".prod" : ""}${ext[format]}`,
     bundle: true,
     allowOverwrite: true,
     charset: "utf8",
@@ -78,23 +103,30 @@ function createConfig({ format, entity, output }) {
     format,
     minify: false,
     target: "es2017",
-    treeShaking: true
+    treeShaking: true,
+    define: {
+      __DEV__: !prod
+    }
   }
 }
 
-async function buildType({ entityName, outName, targetDir }) {
-  await execa("tsc", ["-p", "./tsconfig.prod.json", "--outDir", `${targetDir}/dist/temp`], {
-    stdio: "inherit"
-  })
+async function buildType({ name, dir, dtsMain }) {
+  await execa(
+    "tsc",
+    ["-p", "./tsconfig.prod.json", "--outDir", `${dir}/dist/temp`],
+    {
+      stdio: "inherit"
+    }
+  )
 
-  const apiExtPath = `${targetDir}/api-extractor.json`
+  const apiExtPath = `${dir}/api-extractor.json`
   const mergeConfig = JSON.parse(readFileSync(apiExtPath))
 
   Object.assign(mergeConfig, {
-    mainEntryPointFilePath: `./dist/temp/${entityName}.d.ts`,
+    mainEntryPointFilePath: dtsMain,
     dtsRollup: {
       enabled: true,
-      untrimmedFilePath: `./dist/${outName}.d.ts`
+      untrimmedFilePath: `./dist/${name}.d.ts`
     }
   })
   writeFileSync(apiExtPath, JSON.stringify(mergeConfig, null, 2), "utf-8")
@@ -106,7 +138,7 @@ async function buildType({ entityName, outName, targetDir }) {
     showVerboseMessages: true
   })
   if (!extractorResult.succeeded) {
-    throw `merge ${outName}.d.ts failed`
+    throw `merge ${name}.d.ts failed`
   }
 }
 
