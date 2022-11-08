@@ -8,6 +8,7 @@ import { resolveObservableState, isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
 import { effectState } from "../patch/patchOptions/component/effectState"
+import { HookSetState, HookState } from "../runtime.type"
 
 type Options<T> = {
   value: T
@@ -16,9 +17,6 @@ type Options<T> = {
   key?: Setsuna.Key
   deep?: boolean
 }
-
-export type HookState<T> = () => T
-export type HookSetState<T> = (newState: T) => T
 
 export function createState<T>({
   value,

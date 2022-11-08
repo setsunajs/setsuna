@@ -1,6 +1,5 @@
-import { VNode } from "./../../../jsx"
 import { dom } from "../../../dom"
-import { PatchContext } from "../../patch"
+import { PatchContext, VNode } from "../../../runtime.type"
 import { patchChildren } from "../../patchChildren"
 
 export function updateFragment(context: PatchContext) {

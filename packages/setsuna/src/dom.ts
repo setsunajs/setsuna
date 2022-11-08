@@ -12,7 +12,7 @@ import {
   getNextSibling
 } from "@setsunajs/shared"
 import { Fragment } from "./components/Fragment"
-import { VNode } from "./jsx"
+import { VNode } from "./runtime.type"
 
 export const dom = {
   insertElem,

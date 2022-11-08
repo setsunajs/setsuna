@@ -1,4 +1,4 @@
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { hydrateAwait } from "./hydrateAwait"
 import { mountAwait } from "./mountAwait"
 import { updateAwait } from "./updateAwait"

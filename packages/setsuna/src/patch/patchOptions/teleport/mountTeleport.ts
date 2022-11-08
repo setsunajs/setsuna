@@ -1,11 +1,10 @@
 import { Fragment } from "../../../components/Fragment"
-import { jsx, VNode } from "../../../jsx"
+import { jsx } from "../../../jsx"
 import { dom } from "../../../dom"
 import { render } from "../../../render"
 import { isString } from "@setsunajs/shared"
 import { error } from "../../../handler/errorHandler"
-import { PatchContext } from "../../patch"
-import { TeleportNode } from "../patchNodeTypes"
+import { PatchContext, TeleportNode, VNode } from "../../../runtime.type"
 
 export function mountTeleport(context: PatchContext) {
   const node = context.newVNode!

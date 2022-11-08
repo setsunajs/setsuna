@@ -1,4 +1,4 @@
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { mountComponent } from "./mountComponent"
 import { updateComponent } from "./updateComponent"
 

@@ -1,7 +1,6 @@
-import { VNode } from "./../../../jsx"
+import { ComponentNode, VNode } from "../../../runtime.type"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { unmount } from "../../unmount"
-import { ComponentNode } from "../patchNodeTypes"
 
 export function unmountComponent(node: VNode) {
   const { update, _c: c } = node

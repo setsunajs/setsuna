@@ -1,4 +1,4 @@
-import { VNode } from "./../../../jsx"
+import { VNode } from "../../../runtime.type"
 import { unmount } from "../../unmount"
 
 export function unmountFragment(node: VNode) {

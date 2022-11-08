@@ -1,4 +1,4 @@
-import { VNode } from "./../../../jsx"
+import { VNode } from "../../../runtime.type"
 import { dom } from "../../../dom"
 
 export function unmountTextElement(node: VNode) {

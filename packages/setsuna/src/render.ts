@@ -1,8 +1,8 @@
 import { def } from "@setsunajs/shared"
 import Setsuna from "../jsx"
 import { error } from "./handler/errorHandler"
-import { VNode } from "./jsx"
 import { patch } from "./patch/patch"
+import { VNode } from "./runtime.type"
 
 const rootFlag = "__se_container__"
 

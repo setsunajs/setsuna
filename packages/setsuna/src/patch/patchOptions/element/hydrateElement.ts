@@ -5,7 +5,7 @@ import { hydrateProps, patchProps } from "../../patchProps"
 import { mountElement } from "./mountElement"
 import { normalizeElementNode } from "./normalizeElementNode"
 import { setElementRef } from "./setElementRef"
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { webCustomElement } from "./webCustomElement"
 
 export function hydrateElement(context: PatchContext) {

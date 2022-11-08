@@ -1,4 +1,4 @@
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { patchFragment } from "../fragment/patchFragment"
 
 export function patchSlot(context: PatchContext) {

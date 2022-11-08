@@ -1,9 +1,8 @@
-import { VNode } from "./../../../jsx"
 import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
 import { hydrateChildren } from "../../patchChildren"
 import { mountFragment } from "./mountFragment"
-import { PatchContext } from "../../patch"
+import { PatchContext, VNode } from "../../../runtime.type"
 
 export function hydrateFragment(context: PatchContext) {
   const node = context.newVNode!

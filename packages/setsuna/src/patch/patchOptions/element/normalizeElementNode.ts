@@ -1,7 +1,6 @@
-import { VNode } from "./../../../jsx"
+import { ElementNode, VNode } from "../../../runtime.type"
 import { dom } from "../../../dom"
 import { excludes, isFunction } from "@setsunajs/shared"
-import { ElementNode } from "../patchNodeTypes"
 
 export function normalizeElementNode(
   node: VNode,

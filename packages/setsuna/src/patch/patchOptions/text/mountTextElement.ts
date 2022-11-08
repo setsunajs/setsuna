@@ -1,6 +1,5 @@
 import { dom } from "../../../dom"
-import { PatchContext } from "../../patch"
-import { TextNode } from "../patchNodeTypes"
+import { PatchContext, TextNode } from "../../../runtime.type"
 
 export function mountTextElement(context: PatchContext) {
   const node = context.newVNode!

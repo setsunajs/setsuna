@@ -1,4 +1,3 @@
-import { VNode } from "./../jsx"
 import { Await } from "../components/Await"
 import { Fragment } from "../components/Fragment"
 import { Teleport } from "../components/Teleport"
@@ -12,17 +11,7 @@ import { patchTeleport } from "./patchOptions/teleport/patchTeleport"
 import { patchTextElement } from "./patchOptions/text/patchTextElement"
 import { unmount } from "./unmount"
 import { error } from "../handler/errorHandler"
-
-export type PatchContext = {
-  oldVNode: null | VNode
-  newVNode: null | VNode
-  container: Node
-  anchor?: null | Node
-  parentComponent?: null | any
-  deep: boolean
-  hydrate?: boolean
-  hydrateNode?: Node | null
-}
+import { PatchContext } from "../runtime.type"
 
 export function patch(patchContext: PatchContext) {
   const { oldVNode, newVNode } = patchContext

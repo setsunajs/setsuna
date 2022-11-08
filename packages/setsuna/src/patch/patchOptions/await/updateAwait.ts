@@ -4,8 +4,7 @@ import { dom } from "../../../dom"
 import { isFunction, isPromise, resolveNextNodes } from "@setsunajs/shared"
 import { patchFragment } from "../fragment/patchFragment"
 import { mountAwait } from "./mountAwait"
-import { PatchContext } from "../../patch"
-import { AwaitNode } from "../patchNodeTypes"
+import { AwaitNode, PatchContext } from "../../../runtime.type"
 
 export function updateAwait(context: PatchContext) {
   const node = context.newVNode!

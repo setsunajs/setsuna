@@ -2,7 +2,7 @@ import { Observable, SubOperator } from "@setsunajs/observable"
 import { resolveObservableState } from "@setsunajs/shared"
 import { isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
-import { HookState } from "./createState"
+import { HookState } from "../runtime.type"
 
 export function useEffect<T>(
   observables: Array<Observable<T> | HookState<T>>,

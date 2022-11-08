@@ -1,5 +1,4 @@
-import { VNode } from "./../../../jsx"
-import { PatchContext } from "../../patch"
+import { PatchContext, VNode } from "../../../runtime.type"
 import { mountChildren } from "../../patchChildren"
 import { dom } from "../../../dom"
 

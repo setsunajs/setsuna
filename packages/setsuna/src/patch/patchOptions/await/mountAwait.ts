@@ -1,8 +1,7 @@
 import { normalizeChildren } from "../../../jsx"
 import { isFunction, isPromise } from "@setsunajs/shared"
 import { patchFragment } from "../fragment/patchFragment"
-import { PatchContext } from "../../patch"
-import { AwaitNode } from "../patchNodeTypes"
+import { AwaitNode, PatchContext } from "../../../runtime.type"
 
 export function mountAwait(context: PatchContext) {
   const node = context.newVNode!

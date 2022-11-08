@@ -2,9 +2,9 @@ import { dom } from "../../../dom"
 import { isFunction, isPromise, resolveNextNodes } from "@setsunajs/shared"
 import { hydrateFragment } from "../fragment/hydrateFragment"
 import { mountAwait } from "./mountAwait"
-import { PatchContext } from "../../patch"
 import { error } from "../../../handler/errorHandler"
 import { normalizeChildren } from "../../../jsx"
+import { PatchContext } from "../../../runtime.type"
 
 export function hydrateAwait(context: PatchContext) {
   const node = context.newVNode!

@@ -1,4 +1,4 @@
-import { VNode } from "./../jsx"
+import { VNode } from "../runtime.type"
 import { error } from "./errorHandler"
 
 export function callWithErrorHandler(

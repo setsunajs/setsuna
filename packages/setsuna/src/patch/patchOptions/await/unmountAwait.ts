@@ -1,6 +1,5 @@
-import { VNode } from "./../../../jsx"
+import { AwaitNode, VNode } from "../../../runtime.type"
 import { unmountFragment } from "../fragment/unmountFragment"
-import { AwaitNode } from "../patchNodeTypes"
 
 export function unmountAwait(node: VNode) {
   const awaitNode: AwaitNode = node._n

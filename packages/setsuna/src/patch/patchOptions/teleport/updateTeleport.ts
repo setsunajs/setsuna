@@ -1,10 +1,9 @@
-import { VNode } from "./../../../jsx"
 import { Fragment } from "../../../components/Fragment"
 import { jsx } from "../../../jsx"
-import { patch, PatchContext } from "../../patch"
+import { patch } from "../../patch"
+import { PatchContext, TeleportNode} from "../../../runtime.type"
 import { mountTeleport } from "./mountTeleport"
 import { unmountTeleport } from "./unmountTeleport"
-import { TeleportNode } from "../patchNodeTypes"
 
 export function updateTeleport(context: PatchContext) {
   const { deep } = context

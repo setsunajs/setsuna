@@ -1,4 +1,4 @@
-import { ComponentNode } from "../patchNodeTypes"
+import { ComponentNode } from "../../../runtime.type"
 
 let activeComponentContext: ComponentNode[] = []
 export const getCurrentInstance = () => activeComponentContext.at(-1)

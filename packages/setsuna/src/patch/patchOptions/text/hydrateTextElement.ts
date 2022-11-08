@@ -1,8 +1,7 @@
 import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
 import { mountTextElement } from "./mountTextElement"
-import { PatchContext } from "../../patch"
-import { TextNode } from "../patchNodeTypes"
+import { PatchContext, TextNode } from "../../../runtime.type"
 
 export function hydrateTextElement(context: PatchContext) {
   const node = context.newVNode!

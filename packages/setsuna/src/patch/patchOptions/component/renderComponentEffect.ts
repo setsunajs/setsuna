@@ -1,21 +1,12 @@
-import { VNode } from "./../../../jsx"
+import { RenderCompEffectOptions, RenderComponentEffect, VNode } from "../../../runtime.type"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { postQueue } from "../../../scheduler"
 import { isFunction } from "@setsunajs/shared"
-import { patch, PatchContext } from "../../patch"
+import { patch } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
 import { dom } from "../../../dom"
-import { ComponentNode } from "../patchNodeTypes"
 
-export type RenderCompEffectOptions = {
-  c: ComponentNode
-  deep: boolean
-  active: boolean
-  hydrate: PatchContext["hydrate"]
-  hydrateNode: PatchContext["hydrateNode"]
-}
 
-export type RenderComponentEffect = { (): any } & RenderCompEffectOptions
 
 export function createRenderComponentEffect(
   options: RenderCompEffectOptions | null

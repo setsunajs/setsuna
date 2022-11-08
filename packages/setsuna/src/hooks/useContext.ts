@@ -2,9 +2,9 @@ import { isPlainObject } from "@setsunajs/shared"
 import { ObservablePipeOperator } from "@setsunajs/observable"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
-import { ComponentContextKey } from "../patch/patchOptions/patchNodeTypes"
-import { createState, HookState } from "./createState"
+import { createState } from "./createState"
 import { useMount } from "./lifecycle"
+import { ComponentContextKey, HookState } from "../runtime.type"
 
 export function useContext<T = any>(
   key: ComponentContextKey,

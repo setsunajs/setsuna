@@ -1,5 +1,5 @@
 import { appendJob } from "../../../scheduler"
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 
 export function updateComponent(context: PatchContext) {
   const { deep } = context

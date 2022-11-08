@@ -1,15 +1,10 @@
 import { Observable, ObservablePipeOperator } from "@setsunajs/observable"
 import { isFunction, isPlainObject } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
-import { HookState, createState } from "./createState"
+import { ComputedOptions, HookState } from "../runtime.type"
+import { createState } from "./createState"
 import { useEffect } from "./useEffect"
 
-export type ComputedOptions<T> =
-  | (() => T)
-  | {
-      get: () => Array<Observable<T> | HookState<T>>
-      set?: () => void
-    }
 export function useComputed<T>(
   observables: Array<Observable<T> | HookState<T>>,
   options: ComputedOptions<T>,

@@ -6,23 +6,7 @@ import {
   excludes
 } from "@setsunajs/shared"
 import Setsuna from "../jsx"
-import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
-
-export type VNode = {
-  type: Setsuna.SeElementType
-  key: Setsuna.Key
-  props: Record<any, any>
-  text: string
-  children: Setsuna.SeElementChildren
-  el?: Node | null
-  anchor?: Node | null
-  _c: any
-  _n: any
-  _hmrId?: string
-  _file?: string
-  __se_VNode: true
-  update?: RenderComponentEffect
-}
+import { VNode } from "./runtime.type"
 
 export const _node_flag = "__se_VNode"
 export function isVNode(value: unknown): value is VNode {

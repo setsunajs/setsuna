@@ -1,8 +1,8 @@
-import { VNode } from "../jsx"
 import { dom } from "../dom"
 import { isSomeVNode, isUndef } from "@setsunajs/shared"
-import { patch, PatchContext } from "./patch"
+import { patch } from "./patch"
 import { unmount } from "./unmount"
+import { PatchContext, VNode } from "../runtime.type"
 
 export function mountChildren(children: VNode[], options: PatchContext) {
   const size = children.length

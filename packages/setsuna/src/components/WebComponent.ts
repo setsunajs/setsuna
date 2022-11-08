@@ -1,10 +1,10 @@
-import { VNode } from "./../jsx"
 import { jsx } from "../jsx"
 import { dom } from "../dom"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
 import { patch } from "../patch/patch"
 import { webCustomElement } from "../patch/patchOptions/element/webCustomElement"
+import { VNode } from "../runtime.type"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 

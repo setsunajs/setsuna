@@ -5,8 +5,7 @@ import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
 import { createRenderComponentEffect } from "./renderComponentEffect"
 import { error } from "../../../handler/errorHandler"
-import { PatchContext } from "../../patch"
-import { ComponentNode } from "../patchNodeTypes"
+import { ComponentNode, PatchContext } from "../../../runtime.type"
 
 let cid = 0
 export function mountComponent(context: PatchContext) {

@@ -1,4 +1,4 @@
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { hydrateElement } from "./hydrateElement"
 import { mountElement } from "./mountElement"
 import { updateElement } from "./updateElement"

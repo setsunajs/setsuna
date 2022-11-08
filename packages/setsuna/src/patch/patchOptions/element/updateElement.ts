@@ -1,7 +1,6 @@
-import { PatchContext } from "../../patch"
+import { ElementNode, PatchContext } from "../../../runtime.type"
 import { patchChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
-import { ElementNode } from "../patchNodeTypes"
 import { normalizeElementNode } from "./normalizeElementNode"
 
 export function updateElement(context: PatchContext) {

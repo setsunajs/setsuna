@@ -1,8 +1,7 @@
 import { isFunction } from "@setsunajs/shared"
 import { callWithErrorHandler } from "./handler/callWithErrorHandler"
 import { error } from "./handler/errorHandler"
-import { VNode } from "./jsx"
-import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
+import { RenderComponentEffect, VNode } from "./runtime.type"
 
 let pending = true
 let pendingQueue: RenderComponentEffect[] = []

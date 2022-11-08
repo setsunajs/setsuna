@@ -1,5 +1,5 @@
 import { dom } from "../../../dom"
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { mountChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
 import { normalizeElementNode } from "./normalizeElementNode"

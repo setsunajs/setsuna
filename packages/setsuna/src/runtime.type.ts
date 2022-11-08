@@ -1,6 +1,31 @@
 import { Observable } from "@setsunajs/observable"
-import { VNode } from "../../jsx"
-import { RenderComponentEffect } from "./component/renderComponentEffect"
+
+export type VNode = {
+  type: Setsuna.SeElementType
+  key: Setsuna.Key
+  props: Record<any, any>
+  text: string
+  children: Setsuna.SeElementChildren
+  el?: Node | null
+  anchor?: Node | null
+  _c: any
+  _n: any
+  _hmrId?: string
+  _file?: string
+  __se_VNode: true
+  update?: RenderComponentEffect
+}
+
+export type PatchContext = {
+  oldVNode: null | VNode
+  newVNode: null | VNode
+  container: Node
+  anchor?: null | Node
+  parentComponent?: null | any
+  deep: boolean
+  hydrate?: boolean
+  hydrateNode?: Node | null
+}
 
 export type ElementNode = {
   el: Node | null
@@ -47,3 +72,22 @@ export type ComponentNode = {
   mounted: boolean
   VNode: VNode
 }
+
+export type RenderCompEffectOptions = {
+  c: ComponentNode
+  deep: boolean
+  active: boolean
+  hydrate: PatchContext["hydrate"]
+  hydrateNode: PatchContext["hydrateNode"]
+}
+
+export type RenderComponentEffect = { (): any } & RenderCompEffectOptions
+
+export type HookState<T> = () => T
+export type HookSetState<T> = (newState: T) => T
+export type ComputedOptions<T> =
+  | (() => T)
+  | {
+      get: () => Array<Observable<T> | HookState<T>>
+      set?: () => void
+    }

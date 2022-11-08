@@ -1,8 +1,8 @@
 import { patch } from "./patch/patch"
-import { jsx, VNode } from "./jsx"
+import { jsx } from "./jsx"
 import { isFunction } from "@setsunajs/shared"
 import { isWebComponent } from "./components/WebComponent"
-import { RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
+import { RenderComponentEffect, VNode } from "./runtime.type"
 
 if (!globalThis?.window?.__SETSUNA_HMR_MAP__) {
   globalThis.window.__SETSUNA_HMR_MAP__ = {

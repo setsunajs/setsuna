@@ -1,4 +1,4 @@
-import { PatchContext } from "../../patch"
+import { PatchContext } from "../../../runtime.type"
 import { hydrateFragment } from "./hydrateFragment"
 import { mountFragment } from "./mountFragment"
 import { updateFragment } from "./updateFragment"

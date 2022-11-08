@@ -1,7 +1,7 @@
 import { ObservablePipeOperator } from "@setsunajs/observable"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
-import { ComponentContextKey } from "../patch/patchOptions/patchNodeTypes"
+import { ComponentContextKey } from "../runtime.type"
 import { createState } from "./createState"
 
 export function useProvide<T>(
