@@ -1,13 +1,13 @@
 import { VNode } from "./../../../jsx"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
-import { appendJob, postQueue } from "../../../scheduler"
+import { postQueue } from "../../../scheduler"
 import { isFunction } from "@setsunajs/shared"
 import { patch, PatchContext } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
 import { dom } from "../../../dom"
 import { ComponentNode } from "../patchNodeTypes"
 
-type RenderCompEffectOptions = {
+export type RenderCompEffectOptions = {
   c: ComponentNode
   deep: boolean
   active: boolean
@@ -29,7 +29,6 @@ export function createRenderComponentEffect(
       updates,
       subTree: preSubTree,
       container,
-      deps,
       mounts,
       VNode
     } = c

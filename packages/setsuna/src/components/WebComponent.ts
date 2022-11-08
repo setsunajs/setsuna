@@ -1,11 +1,9 @@
 import { VNode } from "./../jsx"
-import { nodeToString } from "../server/pipes/pipeNodeToString"
 import { jsx } from "../jsx"
 import { dom } from "../dom"
 import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
 import { patch } from "../patch/patch"
-import { SSRRenderContext } from "../server/pipes/pipeNormalizeRenderContext"
 import { webCustomElement } from "../patch/patchOptions/element/webCustomElement"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
@@ -22,25 +20,25 @@ export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
 
   class TElement extends HTMLElement {
     static displayName = name
-    static ssrRender({
-      VNode: { props, children },
-      parentComponent
-    }: SSRRenderContext) {
-      const tempBuf = nodeToString({
-        VNode: jsx(fc, props),
-        parentComponent: null
-      })
-      const tagBuf = nodeToString({
-        VNode: jsx(name, Object.assign(props, { hydrate: true }), ...children),
-        parentComponent
-      })
-      return [
-        `<template component-name="${name}-${sid++}">`,
-        tempBuf,
-        "</template>",
-        tagBuf
-      ]
-    }
+    // static ssrRender({
+    //   VNode: { props, children },
+    //   parentComponent
+    // }: SSRRenderContext) {
+    //   const tempBuf = nodeToString({
+    //     VNode: jsx(fc, props),
+    //     parentComponent: null
+    //   })
+    //   const tagBuf = nodeToString({
+    //     VNode: jsx(name, Object.assign(props, { hydrate: true }), ...children),
+    //     parentComponent
+    //   })
+    //   return [
+    //     `<template component-name="${name}-${sid++}">`,
+    //     tempBuf,
+    //     "</template>",
+    //     tagBuf
+    //   ]
+    // }
 
     connected = false
     props: Record<any, any>

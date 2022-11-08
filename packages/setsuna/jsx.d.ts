@@ -1,4 +1,3 @@
-import { Fragment } from "./src/components/Fragment"
 import * as CSS from "csstype"
 
 export = Setsuna
@@ -26,11 +25,10 @@ declare namespace Setsuna {
     hmrId?: string
     file?: string
   }
-  type Fragment = typeof Fragment
   type DOMElement = keyof JSX.IntrinsicElements | (string & {})
   type Teleport = FC<{ to: string | Element }>
   type Await = FC<{ active?: boolean | (() => boolean); fallback?: SeElement }>
-  type SeElementType = FC<any> | string | Fragment
+  type SeElementType = FC<any> | string
 }
 
 /* 

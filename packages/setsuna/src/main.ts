@@ -1,6 +1,6 @@
 export * from "./hmr"
 
-export { jsx, isVNode } from "./jsx"
+export { jsx, isVNode, VNode } from "./jsx"
 export * from "./render"
 export * from "./components/Await"
 export * from "./components/Fragment"
@@ -8,3 +8,5 @@ export * from "./components/Teleport"
 export * from "./components/WebComponent"
 export * from "./hooks/index"
 export { nextTick } from "./scheduler"
+export * from "./patch/patchOptions/patchNodeTypes"
+export { RenderCompEffectOptions, RenderComponentEffect } from "./patch/patchOptions/component/renderComponentEffect"
