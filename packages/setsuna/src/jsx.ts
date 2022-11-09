@@ -5,8 +5,7 @@ import {
   isPromise,
   excludes
 } from "@setsunajs/shared"
-import Setsuna from "../jsx"
-import { VNode } from "./runtime.type"
+import { FC, SeElementChildren, VNode } from "./runtime.type"
 
 export const _node_flag = "__se_VNode"
 export function isVNode(value: unknown): value is VNode {
@@ -39,15 +38,15 @@ export function jsx<P = {}>(
   }
 
   if (isFunction(type)) {
-    VNode._hmrId = (type as Setsuna.FC).hmrId
-    VNode._file = (type as Setsuna.FC).file
+    VNode._hmrId = (type as FC).hmrId
+    VNode._file = (type as FC).file
   }
 
   return VNode
 }
 
 type NormalizeChildContext = {
-  childrenNodes: Setsuna.SeElementChildren
+  childrenNodes: SeElementChildren
   text: string
 }
 export function normalizeChildren(children: unknown[]) {

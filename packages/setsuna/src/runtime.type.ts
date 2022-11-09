@@ -1,11 +1,31 @@
 import { Observable } from "@setsunajs/observable"
 
+export type Key = number | string | symbol
+export type SeElement<
+  P = any,
+  T extends string | ((props: P) => () => SeElement<any, any> | null) =
+    | string
+    | ((props: P) => () => SeElement<any, any> | null)
+> = {
+  type: T
+  props: P
+  key: Key | null
+}
+export type SeElementChildren = Array<
+  VNode | Promise<any> | ((...args: any[]) => any) | Function | null
+>
+export type FC<P = {}> = {
+  (props: P): any
+  hmrId?: string
+  file?: string
+}
+
 export type VNode = {
-  type: Setsuna.SeElementType
-  key: Setsuna.Key
+  type: any
+  key: Key
   props: Record<any, any>
   text: string
-  children: Setsuna.SeElementChildren
+  children: SeElementChildren
   el?: Node | null
   anchor?: Node | null
   _c: any
@@ -32,7 +52,7 @@ export type ElementNode = {
   tag: string
   ref?: Observable | null
   attrs: Record<any, any>
-  children: Setsuna.SeElementChildren
+  children: SeElementChildren
 }
 
 export type AwaitNode = {
@@ -56,11 +76,11 @@ export type TextNode = {
 export type ComponentContextKey = string | number | symbol
 export type ComponentNode = {
   cid: number
-  FC: Setsuna.FC
+  FC: FC
   props: Record<any, any>
   container: Node
   parentComponent: ComponentNode
-  slot: Setsuna.SeElementChildren
+  slot: SeElementChildren
   subTree: VNode | null
   render: (() => VNode) | null
   observable: Array<Observable>

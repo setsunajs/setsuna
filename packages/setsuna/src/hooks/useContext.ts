@@ -8,13 +8,13 @@ import { ComponentContextKey, HookState } from "../runtime.type"
 
 export function useContext<T = any>(
   key: ComponentContextKey,
-  pipes: ObservablePipeOperator<T, T>[]
+  pipes?: ObservablePipeOperator<T, T>[]
 ): HookState<T>
 export function useContext<T = any>(
   key: ComponentContextKey,
   options: {
     defaultValue?: T
-    pipes: ObservablePipeOperator<T, T>[]
+    pipes?: ObservablePipeOperator<T, T>[]
   }
 ): HookState<T>
 export function useContext(key: ComponentContextKey, options: any) {
@@ -25,7 +25,7 @@ export function useContext(key: ComponentContextKey, options: any) {
     ("pipe" in options || "defaultValue" in options)
   ) {
     defaultValue = options.defaultValue
-    pipes = options.defaultValue
+    pipes = options.defaultValue ?? []
   } else {
     pipes = options
   }

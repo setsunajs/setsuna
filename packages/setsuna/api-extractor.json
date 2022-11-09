@@ -1,6 +1,6 @@
 {
   "extends": "../../api-extractor.json",
-  "mainEntryPointFilePath": "./dist/temp/main.d.ts",
+  "mainEntryPointFilePath": "./dist/temp/setsuna/src/main.d.ts",
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./dist/setsuna.d.ts"

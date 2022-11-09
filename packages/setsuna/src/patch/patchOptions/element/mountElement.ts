@@ -1,3 +1,4 @@
+import { VNode } from './../../../runtime.type';
 import { dom } from "../../../dom"
 import { PatchContext } from "../../../runtime.type"
 import { mountChildren } from "../../patchChildren"
@@ -12,7 +13,7 @@ export function mountElement(context: PatchContext) {
 
   patchProps(n.el as Element, n.attrs, {})
   dom.insertElem(n.el!, container, anchor)
-  mountChildren(n.children, {
+  mountChildren(n.children as VNode[], {
     ...context,
     anchor: null,
     container: n.el as Element

@@ -2,7 +2,7 @@ import { dom } from "../dom"
 import { isSomeVNode, isUndef } from "@setsunajs/shared"
 import { patch } from "./patch"
 import { unmount } from "./unmount"
-import { PatchContext, VNode } from "../runtime.type"
+import { Key, PatchContext, VNode } from "../runtime.type"
 
 export function mountChildren(children: VNode[], options: PatchContext) {
   const size = children.length
@@ -40,7 +40,7 @@ export function patchChildren(
   let s2 = 0
   let e2 = newChildren.length - 1
 
-  let oldKeyMap: null | Map<Setsuna.Key, any> = null
+  let oldKeyMap: null | Map<Key, any> = null
 
   while (s1 <= e1 && s2 <= e2) {
     const sNode1 = oldChildren[s1]

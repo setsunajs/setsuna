@@ -8,13 +8,13 @@ import { resolveObservableState, isArray } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
 import { effectState } from "../patch/patchOptions/component/effectState"
-import { HookSetState, HookState } from "../runtime.type"
+import { HookSetState, HookState, Key } from "../runtime.type"
 
 type Options<T> = {
   value: T
   pipes?: ObservablePipeOperator<T, T>[]
   needObserver?: boolean
-  key?: Setsuna.Key
+  key?: Key
   deep?: boolean
 }
 

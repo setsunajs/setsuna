@@ -11,7 +11,7 @@ import { unmountTextElement } from "./patchOptions/text/unmountTextElement"
 import { error } from "../handler/errorHandler"
 import { VNode } from "../runtime.type"
 
-export function unmount(node: VNode) {
+export function unmount(node: VNode ) {
   const { type } = node
   switch (type) {
     case Fragment:

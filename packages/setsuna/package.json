@@ -1,5 +1,5 @@
 {
-  "name": "@setsunajs/setsuna",
+  "name": "setsuna",
   "version": "0.1.4",
   "description": "A responsive, compact, progressive 'JavaScript' library for better development services",
   "keywords": [
@@ -19,18 +19,14 @@
   "exports": {
     ".": {
       "require": "./index.js",
-      "import": "./dist/setsuna.js"
-    },
-    "./server-renderer": {
-      "require": "./server-renderer.js",
-      "import": "./dist/server-renderer.js"
+      "import": "./dist/setsuna.js",
+      "types": "./dist/setsuna.d.ts"
     },
     "./dist/*": "./dist/*"
   },
   "main": "index.js",
-  "jsdelivr": "dist/setsuna.global.js",
-  "unpkg": "dist/setsuna.global.js",
   "module": "dist/setsuna.js",
+  "types": "dist/setsuna.d.ts",
   "files": [
     "index.js",
     "dist"

@@ -1,35 +1,5 @@
 import * as CSS from "csstype"
-
-export = Setsuna
-export as namespace Setsuna
-declare namespace Setsuna {
-  type Key = number | string | symbol
-
-  type SeElement<
-    P = any,
-    T extends string | ((props: P) => () => SeElement<any, any> | null) =
-      | string
-      | ((props: P) => () => SeElement<any, any> | null)
-  > = {
-    type: T
-    props: P
-    key: Key | null
-  }
-
-  type SeElementChildren = Array<
-    VNode | Promise<any> | ((...args: any[]) => any) | Function | null
-  >
-
-  type FC<P = {}> = {
-    (props: P): any
-    hmrId?: string
-    file?: string
-  }
-  type DOMElement = keyof JSX.IntrinsicElements | (string & {})
-  type Teleport = FC<{ to: string | Element }>
-  type Await = FC<{ active?: boolean | (() => boolean); fallback?: SeElement }>
-  type SeElementType = FC<any> | string
-}
+import { SeElement } from "./src/runtime.type"
 
 /* 
   Element
@@ -55,11 +25,11 @@ export interface CSSProperties
   [v: `--${string}`]: string | number | undefined
 }
 
-type Booleanish = boolean | "true" | "false"
-type Numberish = number | string
+export type Booleanish = boolean | "true" | "false"
+export type Numberish = number | string
 
 // All the WAI-ARIA 1.1 attributes from https://www.w3.org/TR/wai-aria-1.1/
-interface AriaAttributes {
+export interface AriaAttributes {
   /** Identifies the currently active element when DOM focus is on a composite widget, textbox, group, or application. */
   "aria-activedescendant"?: string
   /** Indicates whether assistive technologies will present all, or only parts of, the changed region based on the change notifications defined by the aria-relevant attribute. */
@@ -1312,28 +1282,28 @@ export interface Events {
   onTransitionstart: TransitionEvent
 }
 
-type EventHandlers<E> = {
+export type EventHandlers<E> = {
   [K in keyof E]?: E[K] extends Function ? E[K] : (payload: E[K]) => void
 }
 
-type SetsunaProps = {
+type setsunaProps = {
   key?: string | number | symbol
   ref?: (ref: any) => any
 }
 
 type HTMLElements = {
   [K in keyof IntrinsicElementAttributes]: IntrinsicElementAttributes[K] &
-    SetsunaProps
+    setsunaProps
 }
 
 declare global {
   namespace JSX {
-    interface Element extends Setsuna.SeElement {}
+    interface Element extends SeElement<any, any> {}
     interface IntrinsicElements extends HTMLElements {
       [name: string]: any
     }
 
-    interface IntrinsicAttributes extends SetsunaProps {}
+    interface IntrinsicAttributes extends setsunaProps {}
 
     interface ElementAttributesProperty {
       props: {}

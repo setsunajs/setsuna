@@ -4,18 +4,18 @@ import { unmount } from "../patch/unmount"
 import { hydrate, render } from "../render"
 import { patch } from "../patch/patch"
 import { webCustomElement } from "../patch/patchOptions/element/webCustomElement"
-import { VNode } from "../runtime.type"
+import { FC, VNode } from "../runtime.type"
 
 const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 
 let sid = 0
 let rid = 0
 export const isWebComponent = Symbol("setsuna web component")
-export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
+export function defineElement<P = {}>(name: string, fc: FC<P>) {
   let record = records.get(name)
   if (record) {
     record.instance?.reload(fc)
-    return { wrapper: (() => record.element) as () => Setsuna.FC<P> }
+    return { wrapper: (() => record.element) as () => FC<P> }
   }
 
   class TElement extends HTMLElement {
@@ -43,7 +43,7 @@ export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
     connected = false
     props: Record<any, any>
     shadow: ShadowRoot
-    fc?: Setsuna.FC<any>
+    fc?: FC<any>
     _VNode?: VNode
 
     originGetAttribute?: Element["getAttribute"]
@@ -79,7 +79,7 @@ export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
       return this.nextSibling
     }
 
-    reload(fc: Setsuna.FC) {
+    reload(fc: FC) {
       if (!this.connected) {
         return
       }
@@ -206,7 +206,7 @@ export function defineElement<P = {}>(name: string, fc: Setsuna.FC<P>) {
   records.set(name, (record = { element: TElement }))
   customElements.define(name, TElement)
 
-  return { wrapper: (() => record.element) as () => Setsuna.FC<P> }
+  return { wrapper: (() => record.element) as () => FC<P> }
 }
 
 let templateMap = new Map()

@@ -1,4 +1,4 @@
-import { ElementNode, PatchContext } from "../../../runtime.type"
+import { ElementNode, PatchContext, VNode } from "../../../runtime.type"
 import { patchChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
 import { normalizeElementNode } from "./normalizeElementNode"
@@ -11,7 +11,7 @@ export function updateElement(context: PatchContext) {
 
   n.el = on.el
   patchProps(n.el as Element, n.attrs, on.attrs)
-  patchChildren(n.children, on.children, {
+  patchChildren(n.children as VNode[], on.children as VNode[], {
     ...context,
     newVNode: null,
     oldVNode: null,

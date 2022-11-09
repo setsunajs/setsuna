@@ -14,7 +14,7 @@ const { mod = "prod" } = minimist(process.argv.slice(2))
 let { options } = await inquirer.prompt([
   {
     type: "checkbox",
-    choices: ["setsuna", "all"],
+    choices: ["all", "setsuna"],
     name: "options",
     default: ["all"]
   }
@@ -31,7 +31,7 @@ const pkgConfigs = {
       dir: resolve("./packages/setsuna"),
       main: resolve("./packages/setsuna/src/main.ts"),
       output: resolve("./packages/setsuna/dist/setsuna"),
-      dtsMain: "./dist/temp/main.d.ts",
+      dtsMain: "./dist/temp/setsuna/src/main.d.ts",
       formats: ["esm", "cjs"]
     }
   ]
@@ -104,6 +104,7 @@ function createConfig({ format, main, output, prod }) {
     minify: false,
     target: "es2017",
     treeShaking: true,
+    external: ["@setsunajs/observable"],
     define: {
       __DEV__: !prod
     }

@@ -5,7 +5,7 @@ import { isFunction } from "@setsunajs/shared"
 import { setCurrentInstance } from "./currentInstance"
 import { createRenderComponentEffect } from "./renderComponentEffect"
 import { error } from "../../../handler/errorHandler"
-import { ComponentNode, PatchContext } from "../../../runtime.type"
+import { ComponentNode, FC, PatchContext } from "../../../runtime.type"
 
 let cid = 0
 export function mountComponent(context: PatchContext) {
@@ -14,7 +14,7 @@ export function mountComponent(context: PatchContext) {
   const { type, props, children } = node
   const c: ComponentNode = (node._c = {
     cid: cid++,
-    FC: type as Setsuna.FC,
+    FC: type as FC,
     props,
     container,
     parentComponent,

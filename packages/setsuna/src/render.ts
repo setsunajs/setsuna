@@ -1,12 +1,11 @@
 import { def } from "@setsunajs/shared"
-import Setsuna from "../jsx"
 import { error } from "./handler/errorHandler"
 import { patch } from "./patch/patch"
-import { VNode } from "./runtime.type"
+import { SeElement, VNode } from "./runtime.type"
 
 const rootFlag = "__se_container__"
 
-export function createApp(container: HTMLElement) {
+export function createRoot(container: HTMLElement) {
   if (!(container instanceof HTMLElement)) {
     throw error("render", "container is not a DOM node")
   }
@@ -21,15 +20,15 @@ export function createApp(container: HTMLElement) {
   def(container, rootFlag, true)
 
   return {
-    mount: (node: VNode | Setsuna.SeElement<any, any>) =>
+    mount: (node: VNode | SeElement<any, any>) =>
       render(node, container),
-    hydrate: (node: VNode | Setsuna.SeElement<any, any>) =>
+    hydrate: (node: VNode | SeElement<any, any>) =>
       hydrate(node, container)
   }
 }
 
 export function render(
-  VNode: VNode | Setsuna.SeElement<any, any>,
+  VNode: VNode | SeElement<any, any>,
   container: Node
 ) {
   patch({
@@ -44,7 +43,7 @@ export function render(
 }
 
 export function hydrate(
-  VNode: VNode | Setsuna.SeElement<any, any>,
+  VNode: VNode | SeElement<any, any>,
   container: Node
 ) {
   patch({

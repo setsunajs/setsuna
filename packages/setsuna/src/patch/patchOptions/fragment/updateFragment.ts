@@ -6,7 +6,7 @@ export function updateFragment(context: PatchContext) {
   const node = context.newVNode!
   const oldVNode = context.oldVNode!
   const { container, ...rest } = context
-  patchChildren(oldVNode.children, node.children, {
+  patchChildren(oldVNode.children as VNode[], node.children as VNode[], {
     ...rest,
     container: container ?? oldVNode.el
   })
