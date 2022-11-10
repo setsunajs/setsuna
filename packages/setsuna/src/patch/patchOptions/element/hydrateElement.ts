@@ -47,7 +47,7 @@ export function hydrateElement(context: PatchContext) {
 
   hydrateChildren(children as VNode[], { ...context, hydrateNode: null, container: el })
 
-  setElementRef(n)
+  setElementRef(node.props, n)
   node.el = el
 
   return isCustomWrapper ? (el as any).hydrate(context) : dom.getNextSibling(el)

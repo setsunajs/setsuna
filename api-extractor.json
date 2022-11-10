@@ -18,6 +18,9 @@
     "extractorMessageReporting": {
       "default": {
         "logLevel": "none"
+      },
+      "ae-wrong-input-file-type": {
+        "logLevel": "none"
       }
     },
     "tsdocMessageReporting": {

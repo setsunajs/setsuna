@@ -25,10 +25,7 @@ export function useComputed<T>(
   }
 
   const [state, setState] = createState<T>({ value: getter() as any, pipes })
-  useEffect(observables, () => {
-    setter()
-    setState(getter() as any)
-  })
+  useEffect(observables, () => setState(getter() as any))
 
   return [state, setter]
 }

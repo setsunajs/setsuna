@@ -102,7 +102,7 @@ function createConfig({ format, main, output, prod }) {
     incremental: false,
     format,
     minify: false,
-    target: "es2017",
+    target: "es2018",
     treeShaking: true,
     external: ["@setsunajs/observable"],
     define: {

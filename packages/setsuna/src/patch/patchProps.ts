@@ -53,7 +53,7 @@ export function patchProps(
     } else {
       const eventName = resolveJsxEventName(key)
       eventName
-        ? dom.setEvent(el, key, nValue)
+        ? dom.setEvent(el, eventName, nValue)
         : dom.setAttr(el, key, nValue + "")
     }
 

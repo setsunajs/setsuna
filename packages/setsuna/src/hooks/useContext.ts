@@ -39,15 +39,5 @@ export function useContext(key: ComponentContextKey, options: any) {
   }
 
   const ctxValue = activeContext.context[key]
-  const [state, setState] = createState({
-    value: (ctxValue ?? defaultValue) as any,
-    pipes
-  })
-
-  if (ctxValue) {
-    const unSubscribe = ctxValue.subscribe(value => setState(value))
-    useMount(() => () => unSubscribe())
-  }
-
-  return state
+  return createState({ value: (ctxValue ?? defaultValue) as any, pipes })[0]
 }

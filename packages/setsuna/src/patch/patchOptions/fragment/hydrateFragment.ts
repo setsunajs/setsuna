@@ -31,7 +31,11 @@ export function hydrateFragment(context: PatchContext) {
     node.children as VNode[],
     Object.assign(context, { hydrateNode })
   )
-  node.el = (node.children[0] as VNode).el
-  node.anchor = dom.getNextSiblingNode((node.children.at(-1) as any)?.el)
+  if (node.children.length > 0) {
+    node.el = (node.children[0] as VNode).el
+    node.anchor = dom.getNextSiblingNode((node.children.at(-1) as any)?.el)
+  } else {
+    node.el = node.anchor = null
+  }
   return nextHydrateNode
 }

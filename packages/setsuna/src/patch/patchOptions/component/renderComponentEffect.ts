@@ -29,11 +29,7 @@ export function createRenderComponentEffect(
     setCurrentInstance()
 
     if (mounted) {
-      const updated: ((...args: any[]) => any)[] = []
-      updates.forEach(updateFn => {
-        const fn = callWithErrorHandler(VNode, updateFn)
-        if (isFunction(fn)) updated.push(fn)
-      })
+      const updated = updates.map(updateFn => callWithErrorHandler(VNode, updateFn)).filter(Boolean)
       updated.length > 0 && postQueue.push({ VNode, fns: updated })
 
       patch({
@@ -64,13 +60,13 @@ export function createRenderComponentEffect(
 
       VNode.el = nextSubTree?.el
       VNode.anchor = nextSubTree ? dom.getNextSiblingNode(nextSubTree) : null
-      Object.assign(c, {
-        mounted: true,
-        unmounts: mounts.map(fn => callWithErrorHandler(VNode, fn))
-      })
       Object.assign(renderComponentEffect, {
         hydrate: false,
         hydrateNode: null
+      })
+      Object.assign(c, {
+        mounted: true,
+        unmounts: mounts.map(fn => callWithErrorHandler(VNode, fn)).filter(Boolean)
       })
 
       return nextNode

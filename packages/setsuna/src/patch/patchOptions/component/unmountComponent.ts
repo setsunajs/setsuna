@@ -11,7 +11,7 @@ export function unmountComponent(node: VNode) {
   if (parentComponent) parentComponent.deps.delete(update!)
 
   observable.forEach(input$ => {
-    callWithErrorHandler(node, () => input$.complete())
+    callWithErrorHandler(node, () => !input$.closed && input$.complete())
   })
 
   Reflect.ownKeys(context).forEach(key => {

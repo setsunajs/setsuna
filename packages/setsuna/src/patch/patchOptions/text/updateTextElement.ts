@@ -6,11 +6,12 @@ export function updateTextElement(context: PatchContext) {
   const { content } = oldVNode._n as TextNode
   const newContent = node.text
 
+  node.el = oldVNode.el
+  node._n = oldVNode._n
+
   if (content !== newContent) {
+    const textNode: TextNode = { content: newContent }
+    node._n = textNode
     dom.setElemText(node.el!, newContent)
   }
-
-  const textNode: TextNode = { content: newContent }
-  node.el = oldVNode.el
-  node._n = textNode
 }

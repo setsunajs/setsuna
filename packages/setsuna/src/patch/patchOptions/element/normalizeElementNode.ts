@@ -11,7 +11,7 @@ export function normalizeElementNode(
   return (node._n = {
     el: create ? dom.createElem(tag, props) : null,
     tag,
-    ref: props.ref,
+    ref: null,
     attrs: excludes(props, key => key === "ref"),
     children
   })

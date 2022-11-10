@@ -4,7 +4,7 @@ import {
   ObservablePipeOperator,
   OB_FLAG
 } from "@setsunajs/observable"
-import { resolveObservableState, isArray } from "@setsunajs/shared"
+import { resolveObservableState, isArray, def } from "@setsunajs/shared"
 import { error } from "../handler/errorHandler"
 import { getCurrentInstance } from "../patch/patchOptions/component/currentInstance"
 import { effectState } from "../patch/patchOptions/component/effectState"
@@ -30,8 +30,8 @@ export function createState<T>({
     error("hook", "invalid pipes param, expected 'Array' but got", [pipes])
   }
 
-  const input$ = createObservable<T>(resolveObservableState(value))
-  input$.pipe.apply(null, [pipeDiffState, ...pipes] as any)
+  const input$ = createObservable<T>(resolveObservableState(value) ?? value)
+  input$.pipe.apply(null, [pipeDiffState(input$), ...pipes] as any)
 
   const originContext = getCurrentInstance()
   if (needObserver && originContext) {
@@ -54,6 +54,8 @@ export function createState<T>({
 
     return input$.value
   }
+  def(state, "input$", input$)
+
   const setState = async (nValue: T) => {
     effectState.set(input$, input$.value)
     return input$.next(nValue)

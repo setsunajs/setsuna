@@ -3,7 +3,8 @@ import {
   isFunction,
   isPlainObject,
   isPromise,
-  excludes
+  excludes,
+  resolveObservableState
 } from "@setsunajs/shared"
 import { FC, SeElementChildren, VNode } from "./runtime.type"
 
@@ -66,6 +67,11 @@ function normalizeChild(child: unknown, ctx: NormalizeChildContext) {
   // but only null | undefined need nothing to do
   if (child === null || child === undefined) return
 
+  const input$ = resolveObservableState(child)
+  if (input$) {
+    child = input$.value
+  }
+
   if (isVNode(child) || isPromise(child) || isFunction(child)) {
     if (ctx.text.length > 0) {
       ctx.childrenNodes.push(jsx("text", {}, ctx.text) as any)
@@ -75,6 +81,6 @@ function normalizeChild(child: unknown, ctx: NormalizeChildContext) {
   } else if (isArray(child)) {
     child.forEach(childItem => normalizeChild(childItem, ctx))
   } else {
-    ctx.text += child
+    ctx.text += String(child)
   }
 }
