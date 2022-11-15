@@ -27,5 +27,5 @@ export function useComputed<T>(
   const [state, setState] = createState<T>({ value: getter() as any, pipes })
   useEffect(observables, () => setState(getter() as any))
 
-  return [state, setter]
+  return [state, setter] as const
 }
