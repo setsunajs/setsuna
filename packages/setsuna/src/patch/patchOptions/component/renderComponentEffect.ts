@@ -29,6 +29,8 @@ export function createRenderComponentEffect(
     setCurrentInstance()
 
     if (mounted) {
+      // use Lazy of setsuna-router will be null. skip the first
+      if (!nextSubTree) return
       const updated = updates.map(updateFn => callWithErrorHandler(VNode, updateFn)).filter(Boolean)
       updated.length > 0 && postQueue.push({ VNode, fns: updated })
 
