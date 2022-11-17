@@ -1,6 +1,6 @@
 {
   "name": "setsuna",
-  "version": "0.1.4",
+  "version": "0.1.0",
   "description": "A responsive, compact, progressive 'JavaScript' library for better development services",
   "keywords": [
     "setsuna",
@@ -32,8 +32,8 @@
     "dist"
   ],
   "dependencies": {
-    "@setsunajs/observable": "^0.1.5",
-    "@setsunajs/shared": "^0.1.2",
+    "@setsunajs/observable": "^0.2.1",
+    "@setsunajs/shared": "^0.2.0",
     "csstype": "^3.1.1"
   }
 }
