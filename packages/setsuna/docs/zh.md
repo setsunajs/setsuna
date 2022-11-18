@@ -99,7 +99,7 @@ create-setsuna
 
 ```js
 // App.jsx
-import { render, useState } from "setsuna"
+import { render, useState } from "setsunajs"
 
 function App() {
   const [num, setNum] = useState(0)
@@ -149,7 +149,7 @@ render(
 `useState` 用于创建状态，是创建一个状态最基本的单元
 
 ```javascript
-import { useState } from "setsuna"
+import { useState } from "setsunajs"
 export function Comp() {
   const [num, setNum] = useState(0)
   const add = () => {
@@ -179,7 +179,7 @@ export function Comp() {
 由于`useState()`的实现底层是满足，我们约定的响应式规范的，所以还能支持管道功能
 
 ```javascript
-import { useState } from "setsuna"
+import { useState } from "setsunajs"
 export function Comp() {
 	//第二个参数为一个数组，数组中的函数会被当做管道函数
   const [num, setNum] = useState(0, [
@@ -207,7 +207,7 @@ export function Comp() {
 `useComputed`适用于作为派发状态，即当一个响应式的状态改变后，会触发自身的`getter`函数，然后计算最新的值
 
 ```javascript
-import { useState, useComputed } from "setsuna"
+import { useState, useComputed } from "setsunajs"
 export function Comp() {
   const [num, setNum] = useState(0)
   const add = () => setNum(num() + 1)
@@ -242,7 +242,7 @@ export function Comp() {
 在获取 dom 节点时推荐使用使用
 
 ```javascript
-import { useRef } from "setsuna"
+import { useRef } from "setsunajs"
 export function Comp() {
   const [ref, setRef] = useRef(null)
 
@@ -258,7 +258,7 @@ export function Comp() {
 用于监听响应式状态的改变
 
 ```javascript
-import { useState, useEffect } from "setsuna"
+import { useState, useEffect } from "setsunajs"
 export function Comp() {
   const [num, setNum] = useState(0)
   const add = () => {
@@ -288,7 +288,7 @@ export function Comp() {
 用于**创建和消费，跨组件层级的响应式状态**
 
 ```javascript
-import { useProvide, useContext } from "setsuna"
+import { useProvide, useContext } from "setsunajs"
 function App() {
   const [provide, setProvide] = useProvide("key", 0)
   const add = () => setProvide(provide() + 1)
@@ -335,7 +335,7 @@ function Child2() {
 挂载相关的生命周期函数
 
 ```javascript
-import { useMount } from "setsuna"
+import { useMount } from "setsunajs"
 
 function Comp() {
 	useMount(() => {
@@ -364,7 +364,7 @@ function Comp() {
 更新相关的生命周期函数
 
 ```javascript
-import { useUpdate } from "setsuna"
+import { useUpdate } from "setsunajs"
 
 function Comp() {
 	useUpdate(() => {
@@ -391,7 +391,7 @@ function Comp() {
 该函数接收一个回调函数
 
 ```javascript
-import { nextTick } from "setsuna"
+import { nextTick } from "setsunajs"
 
 nextTick(() => {
   //do...
@@ -409,7 +409,7 @@ nextTick(() => {
 该组件会默认全局引入
 
 ```javascript
-//import { Fragment } from "setsuna"
+//import { Fragment } from "setsunajs"
 
 function Component() {
   //第一种方式
@@ -467,7 +467,7 @@ export function Comp() {
 传送门组件，可以将子节点挂载到指定的 DOM 节点上，对于`<Tost/>`这种弹窗组件会很好用
 
 ```javascript
-import { Teleport } from "setsuna"
+import { Teleport } from "setsunajs"
 
 export function Comp() {
   const [num, setNum] = useState(0)
@@ -493,7 +493,7 @@ export function Comp() {
 `setsuna.js`支持把自己的运行时系统嵌到`web component`中使用，这也是最为广泛的用法
 
 ```javascript
-import { defineElement } from "setsuna"
+import { defineElement } from "setsunajs"
 defineElement('custom-component', attrs => {
   const [num1, setNum1] = useState(0)
   const add = () => setNum1(num1() + 1)
@@ -513,7 +513,7 @@ function App() {
 同时还支持以下的做法，即把声明的内容作为一个组件来使用，行为同组件一致
 
 ```javascript
-import { defineElement } from "setsuna"
+import { defineElement } from "setsunajs"
 const cusElement = defineElement('custom-component', attrs => {
   const [num1, setNum1] = useState(0)
   const add = () => setNum1(num1() + 1)
@@ -538,7 +538,7 @@ function App() {
 `renderToString`
 
 ```javascript
-import { hydrate, renderToString } from "setsuna"
+import { hydrate, renderToString } from "setsunajs"
 
 function App() {
   return () => <div>

@@ -1,10 +1,10 @@
 {
-  "name": "setsuna",
-  "version": "0.1.0",
+  "name": "setsunajs",
+  "version": "0.1.1",
   "description": "A responsive, compact, progressive 'JavaScript' library for better development services",
   "keywords": [
     "setsuna",
-    "@setsunajs/setsuna"
+    "setsunajs"
   ],
   "homepage": "https://github.com/setsunajs/setsuna#readme",
   "bugs": {
@@ -34,6 +34,7 @@
   "dependencies": {
     "@setsunajs/observable": "^0.2.1",
     "@setsunajs/shared": "^0.2.0",
-    "csstype": "^3.1.1"
+    "csstype": "^3.1.1",
+    "setsunajs": "^0.1.0"
   }
 }
