@@ -2,7 +2,7 @@ export * from "./hmr"
 
 export * from "./runtime.type"
 export { jsx, isVNode } from "./jsx"
-export * from "./render"
+export { createRoot } from "./render"
 export * from "./components/Await"
 export * from "./components/Fragment"
 export * from "./components/Teleport"

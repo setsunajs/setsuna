@@ -1,5 +1,6 @@
 import { def } from "@setsunajs/shared"
 import { error } from "./handler/errorHandler"
+import { isVNode } from "./jsx"
 import { patch } from "./patch/patch"
 import { SeElement, VNode } from "./runtime.type"
 
@@ -20,10 +21,20 @@ export function createRoot(container: HTMLElement) {
   def(container, rootFlag, true)
 
   return {
-    mount: (node: VNode | SeElement<any, any>) =>
-      render(node, container),
-    hydrate: (node: VNode | SeElement<any, any>) =>
-      hydrate(node, container)
+    mount: (node: VNode | SeElement<any, any>) => {
+      if (isVNode(node)) {
+        render(node, container)
+      }
+
+      error("render", "VNode is invalid")
+    },
+    hydrate: (node: VNode | SeElement<any, any>) => {
+      if (isVNode(node)) {
+        hydrate(node, container)
+      }
+
+      error("render", "VNode is invalid")
+    }
   }
 }
 
