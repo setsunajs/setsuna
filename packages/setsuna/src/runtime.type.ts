@@ -104,6 +104,7 @@ export type RenderCompEffectOptions = {
 export type RenderComponentEffect = { (): any } & RenderCompEffectOptions
 
 export type HookState<T> = () => T
+export type S<T> = HookState<T>
 export type HookSetState<T> = (newState: T) => T
 export type ComputedOptions<T> =
   | (() => T)
