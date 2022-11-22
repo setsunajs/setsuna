@@ -22,18 +22,18 @@ export function createRoot(container: HTMLElement) {
 
   return {
     mount: (node: VNode | SeElement<any, any>) => {
-      if (isVNode(node)) {
-        render(node, container)
+      if (!isVNode(node)) {
+        return error("render", "VNode is invalid")
       }
 
-      error("render", "VNode is invalid")
+      render(node, container)
     },
     hydrate: (node: VNode | SeElement<any, any>) => {
-      if (isVNode(node)) {
-        hydrate(node, container)
+      if (!isVNode(node)) {
+        return error("render", "VNode is invalid")
       }
 
-      error("render", "VNode is invalid")
+      hydrate(node, container)
     }
   }
 }

@@ -1,12 +1,15 @@
-import { RenderCompEffectOptions, RenderComponentEffect, VNode } from "../../../runtime.type"
+import {
+  RenderCompEffectOptions,
+  RenderComponentEffect,
+  VNode
+} from "../../../runtime.type"
 import { callWithErrorHandler } from "../../../handler/callWithErrorHandler"
 import { postQueue } from "../../../scheduler"
-import { isFunction } from "@setsunajs/shared"
 import { patch } from "../../patch"
 import { setCurrentInstance } from "./currentInstance"
 import { dom } from "../../../dom"
-
-
+import { isVNode, jsx } from "../../../jsx"
+import { error } from "../../../handler/errorHandler"
 
 export function createRenderComponentEffect(
   options: RenderCompEffectOptions | null
@@ -25,13 +28,13 @@ export function createRenderComponentEffect(
     } = c
 
     setCurrentInstance(c)
-    const nextSubTree: VNode | null = callWithErrorHandler(VNode, render!)
+    const nextSubTree = normalizeSubTree(callWithErrorHandler(VNode, render!))
     setCurrentInstance()
 
     if (mounted) {
-      // use Lazy of setsuna-router will be null. skip the first
-      if (!nextSubTree) return
-      const updated = updates.map(updateFn => callWithErrorHandler(VNode, updateFn)).filter(Boolean)
+      const updated = updates
+        .map(updateFn => callWithErrorHandler(VNode, updateFn))
+        .filter(Boolean)
       updated.length > 0 && postQueue.push({ VNode, fns: updated })
 
       patch({
@@ -46,19 +49,16 @@ export function createRenderComponentEffect(
       VNode.el = nextSubTree ? nextSubTree.el : null
     } else {
       let nextNode = hydrateNode
-
-      if (nextSubTree) {
-        nextNode = patch({
-          oldVNode: null,
-          newVNode: (c.subTree = nextSubTree),
-          container,
-          anchor: VNode.anchor,
-          parentComponent: c,
-          deep,
-          hydrate,
-          hydrateNode
-        })
-      }
+      nextNode = patch({
+        oldVNode: null,
+        newVNode: (c.subTree = nextSubTree),
+        container,
+        anchor: VNode.anchor,
+        parentComponent: c,
+        deep,
+        hydrate,
+        hydrateNode
+      })
 
       VNode.el = nextSubTree?.el
       VNode.anchor = nextSubTree ? dom.getNextSiblingNode(nextSubTree) : null
@@ -68,7 +68,9 @@ export function createRenderComponentEffect(
       })
       Object.assign(c, {
         mounted: true,
-        unmounts: mounts.map(fn => callWithErrorHandler(VNode, fn)).filter(Boolean)
+        unmounts: mounts
+          .map(fn => callWithErrorHandler(VNode, fn))
+          .filter(Boolean)
       })
 
       return nextNode
@@ -78,4 +80,12 @@ export function createRenderComponentEffect(
   Object.assign(renderComponentEffect, options)
   options = null
   return renderComponentEffect as any as RenderComponentEffect
+}
+
+function normalizeSubTree(value: unknown) {
+  if (value === null) return jsx("text", {}, "")
+  if (isVNode(value)) return value
+
+  error("component", "update `VNode` is invalid", [value])
+  return jsx("text", {}, "")
 }

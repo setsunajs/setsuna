@@ -24,7 +24,9 @@ export function flushJobs() {
   }
 
   while ((workingJob = flushingQueue.shift())) {
-    callWithErrorHandler(workingJob.c.VNode, workingJob)
+    if (workingJob.active) {
+      callWithErrorHandler(workingJob.c.VNode, workingJob)
+    }
   }
 
   if (pendingQueue.length > 0) {
