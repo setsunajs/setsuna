@@ -16,6 +16,7 @@ export function registryRecord(
   id: string,
   renderEffect: RenderComponentEffect
 ) {
+  if (!id) return
   let record = records.get(id)
   if (!record) records.set(id, (record = new Set()))
   record.add(renderEffect)
