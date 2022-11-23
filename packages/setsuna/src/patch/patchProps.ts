@@ -12,7 +12,8 @@ const patchedValue = Symbol("patchedValue")
 export function patchProps(
   el: Element,
   newProps: Record<any, any>,
-  oldProps: Record<any, any>
+  oldProps: Record<any, any>,
+  isCustom: boolean
 ) {
   newProps = { ...newProps }
   oldProps = { ...oldProps }
@@ -34,6 +35,12 @@ export function patchProps(
     }
 
     if (Object.is(nValue, oValue)) {
+      oldProps[key] = patchedValue
+      continue
+    }
+
+    if (isCustom) {
+      dom.setAttr(el, key, newProps[key])
       oldProps[key] = patchedValue
       continue
     }

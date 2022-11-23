@@ -1,6 +1,11 @@
 import { ElementNode, VNode } from "../../../runtime.type"
 import { dom } from "../../../dom"
-import { excludes, isFunction, isPlainObject, humpToTransverse } from "@setsunajs/shared"
+import {
+  excludes,
+  isFunction,
+  isPlainObject,
+  humpToTransverse
+} from "@setsunajs/shared"
 
 export function normalizeElementNode(
   node: VNode,

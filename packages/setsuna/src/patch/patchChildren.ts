@@ -48,7 +48,7 @@ export function patchChildren(
 
     const sNode2 = newChildren[s2]
     const eNode2 = newChildren[e2]
-    
+
     if (sNode1 === null) {
       s1++
     } else if (eNode1 === null) {

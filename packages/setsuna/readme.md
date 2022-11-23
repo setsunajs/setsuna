@@ -2,5 +2,5 @@
 
 `setsuna. Js` is a declarative, progressive and compact web front-end framework.
 
-+ `setsuna`
-  + <a href="https://github.com/setsunajs/setsuna/tree/main/packages/setsuna/docs/zh.md">中文</a>
+- `setsuna`
+  - <a href="https://github.com/setsunajs/setsuna/tree/main/packages/setsuna/docs/zh.md">中文</a>

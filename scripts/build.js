@@ -145,10 +145,7 @@ async function buildType({ name, dir, dtsMain }) {
   if (name === "setsuna") {
     const dtsPath = resolve("./packages/setsuna/dist/setsuna.d.ts")
     const originDts = readFileSync(dtsPath, "utf-8")
-    const jsxDts = readFileSync(
-      resolve("./packages/setsuna/jsx.d.ts"),
-      "utf-8"
-    )
+    const jsxDts = readFileSync(resolve("./packages/setsuna/jsx.d.ts"), "utf-8")
     writeFileSync(
       dtsPath,
       jsxDts.replace(`import { SeElement } from "./src/runtime.type"`, "") +

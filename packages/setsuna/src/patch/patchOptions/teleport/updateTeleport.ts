@@ -1,7 +1,7 @@
 import { Fragment } from "../../../components/Fragment"
 import { jsx } from "../../../jsx"
 import { patch } from "../../patch"
-import { PatchContext, TeleportNode} from "../../../runtime.type"
+import { PatchContext, TeleportNode } from "../../../runtime.type"
 import { mountTeleport } from "./mountTeleport"
 import { unmountTeleport } from "./unmountTeleport"
 

@@ -2,6 +2,7 @@ import { ElementNode, PatchContext, VNode } from "../../../runtime.type"
 import { patchChildren } from "../../patchChildren"
 import { patchProps } from "../../patchProps"
 import { normalizeElementNode } from "./normalizeElementNode"
+import { isWebComponent } from "../../../components/WebComponent"
 
 export function updateElement(context: PatchContext) {
   const node = context.newVNode!
@@ -10,7 +11,7 @@ export function updateElement(context: PatchContext) {
   const n = normalizeElementNode(node, false)
 
   n.el = on.el
-  patchProps(n.el as Element, n.attrs, on.attrs)
+  patchProps(n.el as Element, n.attrs, on.attrs, isWebComponent(n.tag))
   patchChildren(n.children as VNode[], on.children as VNode[], {
     ...context,
     newVNode: null,

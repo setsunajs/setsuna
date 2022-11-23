@@ -38,10 +38,7 @@ export function createRoot(container: HTMLElement) {
   }
 }
 
-export function render(
-  VNode: VNode | SeElement<any, any>,
-  container: Node
-) {
+export function render(VNode: VNode | SeElement<any, any>, container: Node) {
   patch({
     oldVNode: null,
     newVNode: VNode as VNode,
@@ -53,10 +50,7 @@ export function render(
   })
 }
 
-export function hydrate(
-  VNode: VNode | SeElement<any, any>,
-  container: Node
-) {
+export function hydrate(VNode: VNode | SeElement<any, any>, container: Node) {
   patch({
     oldVNode: null,
     newVNode: VNode as VNode,

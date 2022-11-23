@@ -23,7 +23,7 @@ export function registryRecord(
 }
 
 export function invokeReload(App: any) {
-  if (!isFunction(App) || App[isWebComponent]) {
+  if (!isFunction(App) || isWebComponent(App)) {
     return
   }
 

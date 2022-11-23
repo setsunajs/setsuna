@@ -1,4 +1,4 @@
-import { VNode } from './../../../runtime.type';
+import { VNode } from "./../../../runtime.type"
 import { error } from "../../../handler/errorHandler"
 import { dom } from "../../../dom"
 import { hydrateChildren } from "../../patchChildren"
@@ -43,9 +43,13 @@ export function hydrateElement(context: PatchContext) {
 
   !isCustomWrapper && !isCustomElement
     ? hydrateProps(el as Element, n.attrs)
-    : patchProps(n.el as Element, n.attrs, {})
+    : patchProps(n.el as Element, n.attrs, {}, false)
 
-  hydrateChildren(children as VNode[], { ...context, hydrateNode: null, container: el })
+  hydrateChildren(children as VNode[], {
+    ...context,
+    hydrateNode: null,
+    container: el
+  })
 
   setElementRef(node.props, n)
   node.el = el

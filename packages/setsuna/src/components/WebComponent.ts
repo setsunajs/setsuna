@@ -1,25 +1,41 @@
 import { jsx } from "../jsx"
-import { dom } from "../dom"
 import { unmount } from "../patch/unmount"
-import { hydrate, render } from "../render"
+import { render } from "../render"
 import { patch } from "../patch/patch"
 import { webCustomElement } from "../patch/patchOptions/element/webCustomElement"
 import { FC, VNode } from "../runtime.type"
+import { isFunction, isString } from "@setsunajs/shared"
 
-const records = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
+const records: Map<
+  string,
+  {
+    fc: FC<any>
+    deps: Set<{ instance: any }>
+  }
+> = window.__SETSUNA_CUSTOM_ELEMENT__ || new Map()
 
-let sid = 0
-let rid = 0
-export const isWebComponent = Symbol("setsuna web component")
+export const isWebComponent = (value: unknown) => {
+  if (isString(value)) {
+    return records.has(value)
+  } else if (isFunction(value)) {
+    for (const name of records.keys()) {
+      if (name === value.name) return true
+    }
+    return false
+  } else {
+    return false
+  }
+}
+
 export function defineElement<P = {}>(name: string, fc: FC<P>) {
   let record = records.get(name)
   if (record) {
-    record.instance?.reload(fc)
-    return { wrapper: (() => record.element) as () => FC<P> }
+    record.fc = fc
+    record.deps.forEach(item => item.instance.reload())
+    return { wrapper: (() => name) as any as () => FC<P> }
   }
 
   class TElement extends HTMLElement {
-    static displayName = name
     // static ssrRender({
     //   VNode: { props, children },
     //   parentComponent
@@ -40,11 +56,11 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
     //   ]
     // }
 
+    props: Record<any, any> = {}
+    shadow: ShadowRoot = this.attachShadow({ mode: "open" })
     connected = false
-    props: Record<any, any>
-    shadow: ShadowRoot
-    fc?: FC<any>
     _VNode?: VNode
+    _record = { instance: this }
 
     originGetAttribute?: Element["getAttribute"]
     originSetAttribute?: Element["setAttribute"]
@@ -54,14 +70,10 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
 
     constructor() {
       super()
-      this.fc = fc
-      this.props = {}
-      this.shadow = this.attachShadow({ mode: "open" })
       this.initAttribute()
       this.initProxyMethod()
-
-      initTemplateMap()
-      record.instance = this
+      record!.deps.add(this._record)
+      // initTemplateMap()
     }
 
     connectedCallback() {
@@ -73,24 +85,22 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
       this.connected = true
     }
 
-    hydrate() {
-      this.shadow.innerHTML = templateMap.get(`${name}-${rid++}`)
-      hydrate((this._VNode = this._createVNode()), this.shadow)
-      return this.nextSibling
-    }
-
-    reload(fc: FC) {
+    reload() {
       if (!this.connected) {
         return
       }
+
       unmount(this._VNode!)
       this.shadow.innerHTML = ""
-      this.fc = fc
+
+      this.initAttribute()
+      this.initProxyMethod()
       render((this._VNode = this._createVNode()), this.shadow)
     }
 
     disconnectedCallback() {
       webCustomElement.delete(name)
+      record!.deps.delete(this._record)
 
       unmount(this._VNode!)
       this.shadow.innerHTML = ""
@@ -101,8 +111,7 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
       this.removeAttribute = this.originRemoveAttribute as any
       this.addEventListener = this.originAddEventListener as any
       this.removeEventListener = this.originRemoveAttribute as any
-      this.fc =
-        this.originGetAttribute =
+      this.originGetAttribute =
         this.originSetAttribute =
         this.originRemoveAttribute =
           void 0
@@ -140,18 +149,8 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
     }
 
     _setAttribute(key: string, value: string) {
-      if (value === this.props[key]) {
+      if (Object.is(value, this.props[key])) {
         return
-      }
-
-      if (typeof value === "number" || typeof value === "string") {
-        this.originSetAttribute!(key, value)
-      } else if (typeof value === "boolean") {
-        value
-          ? this.originSetAttribute!(key, "")
-          : this.originRemoveAttribute!(key)
-      } else {
-        this.originRemoveAttribute!(key)
       }
 
       this.props[key] = value
@@ -163,7 +162,6 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
     }
 
     _removeAttribute(key: string) {
-      this.originRemoveAttribute!(key)
       this.props[key] = void 0
       this._update()
     }
@@ -188,10 +186,10 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
 
     _createVNode() {
       return jsx(
-        this.fc!,
+        record!.fc,
         new Proxy(this.props, {
           set(target, key, value, receiver) {
-            if (!(key in target)) {
+            if (!Reflect.has(target, key)) {
               return false
             }
 
@@ -202,19 +200,8 @@ export function defineElement<P = {}>(name: string, fc: FC<P>) {
     }
   }
 
+  records.set(name, (record = { fc, deps: new Set() }))
   webCustomElement.set(name, true)
-  records.set(name, (record = { element: TElement }))
   customElements.define(name, TElement)
-
-  return { wrapper: (() => record.element) as () => FC<P> }
-}
-
-let templateMap = new Map()
-function initTemplateMap() {
-  document.querySelectorAll("[component-name]").forEach(node => {
-    if (node.nodeName === "TEMPLATE") {
-      templateMap.set(node.getAttribute("component-name"), node.innerHTML)
-      dom.removeElem(node)
-    }
-  })
+  return { wrapper: (() => name) as any as () => FC<P> }
 }
