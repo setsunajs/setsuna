@@ -50,17 +50,18 @@ export function createState<T>({
   }
   def(state, "input$", input$)
 
-  const setState = async (nValue: T) => {
-    effectState.set(input$, input$.value)
-    return input$.next(nValue)
-  }
-
+  const setState = async (nValue: T) => input$.next(nValue)
   return [state, setState] as [HookState<T>, HookSetState<T>]
 }
 
 function pipeDiffState(input$: Observable) {
   return function (value: any) {
-    const oldValue = effectState.get(input$)
-    return Object.is(value, oldValue) ? OB_FLAG.SKIP : value
+    const oldState = effectState.get(input$)
+    if (Object.is(value, oldState)) {
+      return OB_FLAG.SKIP
+    }
+
+    effectState.set(input$, value)
+    return value
   }
 }
