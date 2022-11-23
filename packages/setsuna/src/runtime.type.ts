@@ -1,4 +1,4 @@
-import { Observable } from "@setsunajs/observable"
+import { Observable, ObservableParam } from "@setsunajs/observable"
 
 export type Key = number | string | symbol
 export type SeElement<
@@ -102,10 +102,16 @@ export type RenderCompEffectOptions = {
 }
 
 export type RenderComponentEffect = { (): any } & RenderCompEffectOptions
-
-export type HookState<T> = () => T
+export type PickRawState<T> = T extends HookState<infer N>
+  ? N extends Observable<any, infer B, any>
+    ? B
+    : N
+  : T extends Observable<any, infer M, any>
+  ? M
+  : T
+export type HookState<T = any> = () => PickRawState<T>
 export type S<T> = HookState<T>
-export type HookSetState<T> = (newState: T) => T
+export type HookSetState<T> = (newState: PickRawState<T>) => PickRawState<T>
 export type ComputedOptions<T> =
   | (() => T)
   | {
