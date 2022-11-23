@@ -56,7 +56,14 @@ export function mountComponent(context: PatchContext) {
 
   c.render = render
 
-  observable.forEach(input$ => input$.subscribe(() => appendJob(update!)))
+  observable.forEach(input$ => {
+    input$.subscribe(() => {
+      const deps: ComponentNode["deps"] = new Set()
+      c.deps.forEach(update => update.active && deps.add(update))
+      deps.forEach(update => appendJob(update))
+      c.deps = deps
+    })
+  })
   Reflect.ownKeys(componentContext).forEach(key =>
     componentContext[key].subscribe(() => appendJob(update!, true))
   )

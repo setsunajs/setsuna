@@ -42,13 +42,7 @@ export function createState<T>({
 
   const state = () => {
     const activeContext = getCurrentInstance()
-    if (
-      originContext &&
-      activeContext &&
-      needObserver &&
-      originContext !== activeContext &&
-      !deep
-    ) {
+    if (originContext && activeContext && needObserver && !deep) {
       originContext.deps.add(activeContext.VNode.update!)
     }
 
