@@ -112,9 +112,9 @@ export type PickRawState<T> = T extends HookState<infer N>
 export type HookState<T = any> = () => PickRawState<T>
 export type S<T> = HookState<T>
 export type HookSetState<T> = (newState: PickRawState<T>) => PickRawState<T>
-export type ComputedOptions<T> =
-  | (() => T)
+export type ComputedOptions<T, S> =
+  | (() => PickRawState<T>)
   | {
-      get: () => Array<Observable<T> | HookState<T>>
-      set?: () => void
+      get: () => PickRawState<T>
+      set?: (value: S) => unknown
     }
