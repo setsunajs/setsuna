@@ -4,8 +4,7 @@ import { unmount } from "../../unmount"
 
 export function unmountComponent(node: VNode) {
   const { update, _c: c } = node
-  const { observable, context, unmounts, subTree, deps } =
-    c as ComponentNode
+  const { observable, context, unmounts, subTree, deps } = c as ComponentNode
 
   update!.active = false
 
