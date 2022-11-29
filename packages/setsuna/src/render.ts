@@ -12,7 +12,7 @@ export function createRoot(container: HTMLElement) {
     throw error("render", "container is not a DOM node")
   }
 
-  if ((container as any)[rootFlag] !== rootFlag) {
+  if ((container as any)[rootFlag] === rootFlag) {
     throw error(
       "render",
       "container has been created, please unmount app first"
