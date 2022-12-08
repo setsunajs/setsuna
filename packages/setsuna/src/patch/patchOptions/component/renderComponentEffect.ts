@@ -10,6 +10,7 @@ import { setCurrentInstance } from "./currentInstance"
 import { dom } from "../../../dom"
 import { isVNode, jsx } from "../../../jsx"
 import { error } from "../../../handler/errorHandler"
+import { isFunction } from "@setsunajs/shared"
 
 export function createRenderComponentEffect(
   options: RenderCompEffectOptions | null
@@ -34,8 +35,8 @@ export function createRenderComponentEffect(
     if (mounted) {
       const updated = updates
         .map(updateFn => callWithErrorHandler(VNode, updateFn))
-        .filter(Boolean)
-      updated.length > 0 && postQueue.push({ VNode, fns: updated })
+        .filter(isFunction)
+      updated.length > 0 && postQueue.push({ VNode, fns: updated as any })
 
       patch({
         oldVNode: preSubTree,
@@ -70,7 +71,7 @@ export function createRenderComponentEffect(
         mounted: true,
         unmounts: mounts
           .map(fn => callWithErrorHandler(VNode, fn))
-          .filter(Boolean)
+          .filter(isFunction)
       })
 
       return nextNode
