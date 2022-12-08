@@ -1299,9 +1299,8 @@ type HTMLElements = {
 declare global {
   namespace JSX {
     interface Element extends SeElement<any, any> {}
-    interface IntrinsicElements extends HTMLElements {
-      [name: string]: any
-    }
+
+    interface IntrinsicElements extends HTMLElements {}
 
     interface IntrinsicAttributes extends setsunaProps {}
 
@@ -1314,3 +1313,8 @@ declare global {
     // interface IntrinsicClassAttributes {}
   }
 }
+
+export type CustomElement<
+  T extends Record<string, any> = {},
+  E extends keyof HTMLElements = "div"
+> = Partial<HTMLElements> & T
