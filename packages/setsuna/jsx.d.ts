@@ -1300,7 +1300,9 @@ declare global {
   namespace JSX {
     interface Element extends SeElement<any, any> {}
 
-    interface IntrinsicElements extends HTMLElements {}
+    interface IntrinsicElements extends HTMLElements {
+      children: any
+    }
 
     interface IntrinsicAttributes extends setsunaProps {}
 

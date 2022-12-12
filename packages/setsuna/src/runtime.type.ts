@@ -80,7 +80,9 @@ export type ComponentNode = {
   props: Record<any, any>
   container: Node
   parentComponent: ComponentNode
-  slot: SeElementChildren
+  slot: {
+    value: VNode[]
+  }
   subTree: VNode | null
   render: (() => VNode) | null
   observable: Array<Observable>
