@@ -42,6 +42,7 @@ export type PatchContext = {
   container: Node
   anchor?: null | Node
   parentComponent?: null | any
+  childrenComponent?: ComponentNode
   deep: boolean
   hydrate?: boolean
   hydrateNode?: Node | null
@@ -80,9 +81,7 @@ export type ComponentNode = {
   props: Record<any, any>
   container: Node
   parentComponent: ComponentNode
-  slot: {
-    value: VNode[]
-  }
+  slot: SeElementChildren
   subTree: VNode | null
   render: (() => VNode) | null
   observable: Array<Observable>

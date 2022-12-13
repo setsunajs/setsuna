@@ -18,22 +18,7 @@ export function mountComponent(context: PatchContext) {
     props,
     container,
     parentComponent,
-    slot: {
-      get value() {
-        const _slotChildren: VNode[] = []
-        children.forEach(child => {
-          if ((child as VNode).type !== "children") {
-            return _slotChildren.push(child as VNode)
-          }
-
-          if (parentComponent) {
-            parentComponent.deps.add(update)
-            return _slotChildren.push(...parentComponent.slot.value)
-          }
-        })
-        return _slotChildren
-      }
-    },
+    slot: children,
     subTree: null,
     render: null,
     observable: [],
