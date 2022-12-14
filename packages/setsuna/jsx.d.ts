@@ -1286,10 +1286,13 @@ export type EventHandlers<E> = {
   [K in keyof E]?: E[K] extends Function ? E[K] : (payload: E[K]) => void
 }
 
-type setsunaProps = {
+export type setsunaProps = {
   key?: string | number | symbol
   ref?: (ref: any) => any
 }
+
+export type Attributes<T extends keyof JSX.IntrinsicElements> = setsunaProps &
+  IntrinsicElementAttributes[T]
 
 type HTMLElements = {
   [K in keyof IntrinsicElementAttributes]: IntrinsicElementAttributes[K] &
